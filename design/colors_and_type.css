@@ -1,0 +1,244 @@
+/* ============================================================
+   MONTI TRENTINI — Colors & Type Foundations
+   Casa Finco, casari dal 1925
+   Source: montitrentini.com live extraction (Brand_Guide 2026-05-24)
+   ============================================================ */
+
+/* --- FONTS ---------------------------------------------------
+   Brand fonts ship via Adobe Fonts (Typekit kit "med2peg") and are
+   now ACTIVE in this project:
+     • Cora      — editorial italic serif (Production Type) — 400/700 italic
+     • Futura PT — geometric sans (ParaType / Adobe) — 500/700
+     • Futura PT Bold — heavy display
+     • Futura PT Condensed — selective labels
+   Lora (Cora) and Jost (Futura PT) remain in the stacks below ONLY as
+   offline fallbacks; the real Adobe faces render first. If you fork this
+   kit to another domain, re-publish the Typekit kit for that domain.
+   ------------------------------------------------------------ */
+@import url("https://use.typekit.net/med2peg.css");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Jost:ital,wght@0,400..700;1,400..700&display=swap");
+
+:root {
+  /* ---- BRAND COLORS (raw tokens) ---- */
+  --mt-forest:        #064E22;  /* Forest Green — primary headline + logo bg  (25%) */
+  --mt-italia-green:  #009640;  /* Italia Green — flag green; heritage accent  (8%)  */
+  --mt-sage:          #70C883;  /* Pasture Sage — mid-tone accent, hover       */
+  --mt-mint:          #C8E2C5;  /* Alpine Mint — soft backgrounds, shapes      (5%)  */
+  --mt-cream:         #FFFBDC;  /* Heritage Cream — primary page background     (50%) */
+  --mt-paper:         #FAF9F5;  /* Casa Paper — secondary canvas, cards         */
+  --mt-white:         #FFFFFF;  /* Pure White — wordmark, contrast lift         */
+  --mt-charcoal:      #716A6A;  /* Stone Charcoal — secondary text, captions    */
+  --mt-ink:           #141413;  /* Mountain Ink — body copy, fine detail        (10%) */
+  --mt-italia-red:    #CE2B37;  /* Italia Red — flag ribbon on logo ONLY        (2%)  */
+
+  /* tints derived from brand greens for borders / fills / hovers */
+  --mt-forest-90:     #1B5E33;  /* forest, lightened — hover on forest fills   */
+  --mt-forest-12:     rgba(6, 78, 34, 0.12);   /* hairline rules on cream      */
+  --mt-forest-06:     rgba(6, 78, 34, 0.06);   /* faint fills / argyle pattern */
+  --mt-mint-50:       #E3F0E1;  /* mint, lightened — alternate section bg      */
+
+  /* ---- SEMANTIC COLOR ROLES ---- */
+  --bg:            var(--mt-cream);     /* page background          */
+  --bg-alt:        var(--mt-paper);     /* card / panel canvas      */
+  --bg-invert:     var(--mt-forest);    /* dark sections, logo bg   */
+  --surface-mint:  var(--mt-mint);      /* decorative soft panels   */
+  --fg:            var(--mt-forest);    /* default editorial text   */
+  --fg-body:       var(--mt-ink);       /* long-form body / detail  */
+  --fg-muted:      var(--mt-charcoal);  /* captions, secondary      */
+  --fg-on-dark:    var(--mt-cream);     /* text on forest sections  */
+  --accent:        var(--mt-italia-green); /* heritage accent, nav  */
+  --accent-soft:   var(--mt-sage);      /* hover state, callouts    */
+  --hairline:      var(--mt-forest-12); /* borders / dividers       */
+  --flag-red:      var(--mt-italia-red);/* logo ribbon ONLY         */
+
+  /* ---- TYPE FAMILIES ---- */
+  --font-display: "cora", "Lora", Georgia, "Times New Roman", serif;       /* editorial / heritage — ALWAYS italic */
+  --font-ui:      "futura-pt", "Jost", "Avenir Next", "Helvetica Neue", Arial, sans-serif; /* UI / buttons / nav */
+  --font-ui-bold: "futura-pt-bold", "futura-pt", "Jost", sans-serif;       /* heavy display labels */
+  --font-cond:    "futura-pt-condensed", "Jost", "Arial Narrow", sans-serif; /* tight labels, ≤5% */
+
+  /* ---- TYPE SCALE (from theme stylesheet) ---- */
+  --fs-hero:    64px;  /* Cora italic 700 hero          */
+  --fs-display: 42px;  /* Cora italic — archive subtitle */
+  --fs-h2:      32px;  /* Cora italic 700 in-text title  */
+  --fs-h3:      26px;
+  --fs-body:    24px;  /* Cora italic 400 default body   */
+  --fs-small:   18px;
+  --fs-nav:     22px;  /* Futura PT 700 uppercase nav    */
+  --fs-btn:     15px;  /* Futura PT 700 uppercase button */
+  --fs-btn-lg:  18px;
+  --fs-caption: 14px;
+
+  --lh-tight:   1.1;   /* display / headlines            */
+  --lh-body:    1.35;  /* editorial body                 */
+  --tracking-ui: 0.04em; /* uppercase Futura tracking     */
+
+  /* ---- RADII / SPACING / ELEVATION ---- */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --space-6: 96px;
+  --shadow-card: 0 2px 10px rgba(6, 78, 34, 0.06), 0 12px 32px rgba(6, 78, 34, 0.08);
+  --shadow-soft: 0 1px 3px rgba(20, 20, 19, 0.06);
+}
+
+/* ============================================================
+   SEMANTIC TYPE CLASSES
+   Cora italic carries the editorial/heritage voice.
+   Futura PT 700 uppercase carries every actionable element.
+   Never swap the roles.
+   ============================================================ */
+
+.mt-hero {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-hero);
+  line-height: var(--lh-tight);
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+
+.mt-display {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  color: var(--fg);
+}
+
+.mt-h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-tight);
+  color: var(--fg);
+}
+
+.mt-h3 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-tight);
+  color: var(--fg);
+}
+
+.mt-body {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg);
+}
+
+.mt-body-ink {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--fg-body);
+}
+
+/* Eyebrow / kicker — Futura uppercase */
+.mt-eyebrow {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--fs-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+/* Navigation — Futura PT 700 uppercase */
+.mt-nav {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--fs-nav);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-ui);
+  color: var(--accent);
+}
+
+/* Stat / heavy display number — Futura PT Bold */
+.mt-stat {
+  font-family: var(--font-ui-bold);
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 1;
+  color: var(--fg);
+  font-feature-settings: "tnum" 1;
+}
+
+/* Condensed range label — use sparingly */
+.mt-label-cond {
+  font-family: var(--font-cond);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--fg);
+}
+
+.mt-caption {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-caption);
+  color: var(--fg-muted);
+}
+
+/* ============================================================
+   BUTTONS — Futura PT 700 uppercase
+   ============================================================ */
+.mt-btn {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--fs-btn);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-ui);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  border: 2px solid var(--mt-forest);
+  background: transparent;
+  color: var(--mt-forest);
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.mt-btn:hover { background: var(--mt-forest); color: var(--mt-cream); }
+
+.mt-btn--solid {
+  background: var(--mt-forest);
+  color: var(--mt-cream);
+  border-color: var(--mt-forest);
+}
+.mt-btn--solid:hover { background: var(--mt-forest-90); border-color: var(--mt-forest-90); }
+
+.mt-btn--accent {
+  background: var(--mt-italia-green);
+  border-color: var(--mt-italia-green);
+  color: var(--mt-white);
+}
+.mt-btn--accent:hover { background: var(--mt-forest); border-color: var(--mt-forest); }
+
+.mt-btn--lg { font-size: var(--fs-btn-lg); padding: 17px 34px; }
+
+/* Argyle / diamond pattern that lives behind the nav header.
+   Subtle forest diamonds on cream. */
+.mt-argyle {
+  background-color: var(--mt-cream);
+  background-image:
+    repeating-linear-gradient(45deg,  var(--mt-forest-06) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(-45deg, var(--mt-forest-06) 0 1px, transparent 1px 28px);
+}

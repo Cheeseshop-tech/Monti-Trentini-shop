@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor / tooling
+.vscode/
+*.log
+
+# Local secrets — NEVER commit Cloudinary or other credentials
+.env
+.env.*
+*.secret
+
+# Python
+__pycache__/
+*.pyc

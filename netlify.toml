@@ -1,0 +1,17 @@
+# Netlify config for the Monti Trentini storefront.
+# This is a static site (React + Babel from CDN, no build step), so there is no
+# build command — Netlify just serves the files in `design/`.
+#
+# The storefront entry is design/ui_kits/shopify-store/index.html, and its assets
+# are referenced as ../../ (i.e. relative to design/), so we publish the whole
+# `design` folder and 302-redirect the site root to the storefront. A 302 (not a
+# 200 rewrite) updates the browser URL, so the page's relative asset paths resolve.
+
+[build]
+  publish = "design"
+  # no build command — static files served as-is
+
+[[redirects]]
+  from = "/"
+  to = "/ui_kits/shopify-store/"
+  status = 302
