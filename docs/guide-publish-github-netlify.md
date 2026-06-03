@@ -168,3 +168,22 @@ first try:
 > 💡 Tip: I (Claude) can watch your screen while you do this and fill this table in for
 > you from what's *actually* there — just say "capture as I go" and I'll record the real
 > button names and paths into this guide.
+
+### ✅ Auto-deploy enabled (2026-06-03) — the current setup
+We later pushed the repo to GitHub and switched from Drop to **Git auto-deploy**:
+1. Pushed local repo to **`Cheeseshop-tech/Monti-Trentini-shop`** (`git remote add origin …`
+   → `git push -u origin main`). The repo already had an older web-upload, so we merged
+   the unrelated histories (`git merge --allow-unrelated-histories`), then removed the
+   stale duplicate files that left at the repo root.
+2. Reused the existing Drop site **`comforting-puppy-b2f75a`** instead of making a new one:
+   **Site configuration → Build & deploy → Continuous deployment → Link to existing
+   repository** → GitHub → picked the repo → branch `main`.
+3. Settings auto-filled from `netlify.toml`: **Build command:** empty · **Publish
+   directory:** `design`.
+4. Verified with a test commit — a new deploy appeared in the **Deploys** tab and
+   published. **Every `git push` to `main` now auto-deploys.** Netlify Drop is no longer
+   needed (the `dist/` builder remains as a fallback).
+
+**Field-notes deltas vs. the steps above:** the Continuous deployment screen offered
+**"Link to existing repository"** and **"Push to a new repository"** — we used the former.
+Deleted the dead `mte-com` site (it was tied to an empty repo and 404'd).

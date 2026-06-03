@@ -27,18 +27,15 @@ publish it and connect Netlify. ~10 minutes.
 
 ---
 
-## 2 · Deploy on Netlify
+## 2 · Deploy on Netlify — ✅ DONE (auto-deploy live, 2026-06-03)
 
-1. Go to **netlify.com** → log in → **Add new site → Import an existing project**.
-2. Choose **GitHub**, authorize, and pick your repo.
-3. Build settings (most are auto-filled from `netlify.toml`):
-   - **Build command:** leave EMPTY
-   - **Publish directory:** `design`
-4. **Deploy site.**
-5. Open the site URL — it redirects to the storefront, with real Cloudinary photos.
+GitHub repo: **`Cheeseshop-tech/Monti-Trentini-shop`**, deployed by Netlify site
+**`comforting-puppy-b2f75a`** (linked via *Site configuration → Build & deploy →
+Continuous deployment → Link to existing repository*). Settings (from `netlify.toml`):
+**Build command:** empty · **Publish directory:** `design`.
 
-Every `git push` after this auto-deploys. (In GitHub Desktop you push via **Commit
-to main** → **Push origin**.)
+**Every `git push` to `main` now auto-deploys** — no more manual Netlify Drop.
+Verified working on 2026-06-03 with a test commit.
 
 ---
 
@@ -55,6 +52,7 @@ already delivered and don't need the secret.
 - ✅ Real 2026-03 USD catalog wired in (34 products / 71 SKUs), wholesale-first
 - ✅ Product photos live on Cloudinary (cloud `sofcvmwa`, `monti/<SKU>`)
 - ✅ Local git repo committed; `netlify.toml`, `.gitignore`, README guide in place
+- ✅ Pushed to GitHub (`Cheeseshop-tech/Monti-Trentini-shop`) + Netlify auto-deploy on push
 
 ## To resume editing later
 Open this folder with Claude Code and say what you want changed. Loop:
