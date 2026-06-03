@@ -143,8 +143,27 @@ That's it — edit → commit → push → it's live.
   that repo. If Netlify is already connected to an empty repo, just pushing the code makes
   it auto-deploy.
 - Netlify Drop (drag-and-drop a folder) deploys instantly **without** GitHub, but you lose
-  auto-deploy-on-push and the root `netlify.toml` redirect — so for this project, push to
-  GitHub instead.
+  auto-deploy-on-push and the root `netlify.toml` redirect.
+
+### ✅ What actually worked (2026-06-03) — Netlify Drop
+The GitHub push wasn't set up, so we deployed via **Netlify Drop** instead, and it worked
+first try:
+1. `python3 scripts/build_dist.py` → builds a self-contained **`dist/`** folder
+   (index.html at the root, `../../` asset paths flattened). 91 files.
+2. In Chrome: **`app.netlify.com/drop`**.
+3. Dragged the **`dist/` folder** from Finder onto the drop area.
+4. Netlify deployed it instantly → **live at `comforting-puppy-b2f75a.netlify.app`**,
+   opening on the Shop page with Cloudinary photos.
+
+**Trade-offs / to remember:**
+- Netlify gives a **random site name** (`comforting-puppy-…`). Rename via the site's
+  **Site configuration → Change site name** for a cleaner URL.
+- **No auto-deploy.** To publish future changes: re-run `python3 scripts/build_dist.py`
+  and drag `dist/` onto the **same site's Deploys page** (or `app.netlify.com/drop` again).
+- The earlier `mte-com` site (connected to an empty GitHub repo) can be deleted — it's the
+  one that 404'd.
+- Want auto-deploy later? Push the repo to GitHub and point a Netlify site at it (publish
+  directory `design`, or switch to publishing `dist/`).
 
 > 💡 Tip: I (Claude) can watch your screen while you do this and fill this table in for
 > you from what's *actually* there — just say "capture as I go" and I'll record the real
