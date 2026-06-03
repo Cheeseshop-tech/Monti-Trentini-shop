@@ -5,6 +5,60 @@ This package hands off a **high-fidelity storefront design** for Monti Trentini 
 
 The **primary engineering goal** for this handoff: replace the design's hard-coded sample catalogue with **accurate, live pricing and inventory**, fed by your **price-list creator** (the source of truth for retail + wholesale prices) and confirmed against **real-time inventory** before a customer can buy. See **§ Pricing & Inventory Integration** below — that is the heart of this work.
 
+---
+
+## Running, editing & deploying (current build · 2026-06)
+
+> Since the original handoff, the prototype has been wired to the **real 2026-03 Monti Trentini USA price list** as a **wholesale-first storefront** (USD, $/lb, case formats, availability) with **live product photos on Cloudinary**. This section is the practical guide for running and shipping it. The detailed visual spec follows further down.
+
+### View it locally
+```bash
+cd design && python3 -m http.server 8123
+# then open http://localhost:8123/ui_kits/shopify-store/index.html
+```
+(Or just double-click `design/ui_kits/shopify-store/index.html`.)
+
+### Data pipeline — source of truth → storefront
+```
+2026 03 Price list ALL PRODUCTS.xlsx        (master price list, 71 SKUs)
+   │  extracted →
+   ▼
+data/products_master.json                   71 flat SKUs (USD, parsed, availability)
+   │  scripts/build_catalog.py →
+   ▼
+data/trade_catalog.json                      34 products, each with format variants
+   │  scripts/build_data_jsx.py →
+   ▼
+design/ui_kits/shopify-store/trade-data.jsx  overlays STORE_DATA.products + sets USD
+```
+- To change prices/specs: edit the source, then regenerate:
+  ```bash
+  python3 scripts/build_catalog.py && python3 scripts/build_data_jsx.py
+  ```
+- `trade-data.jsx` is a **non-destructive overlay** — it replaces `STORE_DATA.products` while the original `data.jsx` still provides recipes/journal/social.
+
+### Product images (Cloudinary)
+- Served from Cloudinary cloud **`sofcvmwa`**, public IDs **`monti/<SKU>`**, configured in `design/ui_kits/shopify-store/images.jsx`.
+- Each `<img>` sits over the brand gradient and **falls back to a local copy** (`design/assets/products/<SKU>.jpg`) if a CDN image is ever missing.
+- To (re)upload packshots by SKU code: run `scripts/upload_to_cloudinary.py` (interactive; see `scripts/README_cloudinary.md`). **Never commit API secrets** — `.gitignore` excludes `.env*`.
+
+### Deploy (Netlify)
+- Static site, **no build step**. `netlify.toml` publishes `design/` and 302-redirects `/` → the storefront.
+- In Netlify: **Import an existing project** → pick this GitHub repo → leave build command empty (publish dir `design` comes from `netlify.toml`) → deploy. Every push auto-deploys.
+
+### Edit loop
+`edit locally (with Claude Code) → git commit → git push → Netlify auto-deploys`. Small cosmetic tweaks (accent colour, announcement copy, retail/wholesale start mode) can also be changed live via the in-app **Tweaks panel**.
+
+### Key paths
+| Path | What |
+|---|---|
+| `design/ui_kits/shopify-store/` | the storefront prototype (components + `trade-data.jsx` + `images.jsx`) |
+| `data/` | `products_master.json`, `trade_catalog.json` (generated catalog data) |
+| `scripts/` | `build_catalog.py`, `build_data_jsx.py`, `upload_to_cloudinary.py` (+ its README) |
+| `integration_reference.html` | one-page visual reference of the two codebases & integration plan |
+
+---
+
 ## About the design files
 The files in `design/` are **design references created in HTML/React-via-Babel** — a prototype showing the intended look, layout and behaviour. They are **not production code to ship**. The task is to **recreate these designs in the target environment** — a real Shopify theme (Liquid + Online Store 2.0, or a Hydrogen/React storefront) — using Shopify's data model and your existing infra. Treat the HTML as the visual + interaction spec, not the implementation.
 
