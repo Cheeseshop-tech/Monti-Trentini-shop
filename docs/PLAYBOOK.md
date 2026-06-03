@@ -6,6 +6,17 @@ re-figure-out the steps. Add a new entry each time we finish a process.
 > **How to use:** each process is either a full guide in `docs/` or a pointer to where
 > it's already documented. When we complete something new, we add a row + a guide here.
 
+> ⚠️ **Capture reality, not just instructions.** Web tools (GitHub, Netlify, Cloudinary…)
+> redesign their UIs and rename buttons often, so any written step can go stale. Each
+> guide ends with a **📝 Field notes** section — as you actually do it, jot down *what
+> the button was really called, where it actually was, and the date.* Your dated notes
+> are the source of truth; the steps above them are just the starting map.
+>
+> **When a step doesn't match what's on screen:** (1) look for a synonym — "Publish/Push/
+> Deploy/Import/Add" often swap; (2) use the page's own **search** (Cloudinary & GitHub
+> settings both have one); (3) check **Settings/⚙️** menus; (4) screenshot it and add it
+> to Field notes so it's right next time.
+
 ---
 
 ## Processes completed

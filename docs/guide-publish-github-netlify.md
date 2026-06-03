@@ -107,3 +107,30 @@ That's it — edit → commit → push → it's live.
   falls back to local photos, so check `design/ui_kits/shopify-store/images.jsx`.
 - **Push rejected** → in GitHub Desktop click **Fetch origin** first, then push again.
 - **Stuck?** Reopen this folder with Claude Code and describe what you see.
+
+---
+
+## 📝 Field notes (fill in as you actually do it)
+
+> Buttons move and get renamed. When the guide above doesn't match the screen, write
+> down **what you really saw** here, with the date. Next time, trust this section first.
+
+**Date I did this:** ____________  ·  **Tool versions/looked like:** ____________
+
+| Step | What the guide said | What it was ACTUALLY called / where it really was |
+|------|---------------------|---------------------------------------------------|
+| GitHub Desktop: add repo | "File → Add Local Repository…" | |
+| GitHub Desktop: publish | "Publish repository" button (top-right) | |
+| Netlify: start import | "Add new site → Import an existing project" | |
+| Netlify: connect GitHub | "Deploy with GitHub" | |
+| Netlify: publish dir field | "Publish directory: `design`" | |
+| Netlify: where deploy status shows | "Deploys tab → Published" | |
+| Netlify: rename site | "Site configuration → Change site name" | |
+| Anything surprising | — | |
+
+**Screenshots:** drop any into `docs/screenshots/` and reference them here, e.g.
+`![netlify import](screenshots/netlify-import.png)`.
+
+> 💡 Tip: I (Claude) can watch your screen while you do this and fill this table in for
+> you from what's *actually* there — just say "capture as I go" and I'll record the real
+> button names and paths into this guide.
