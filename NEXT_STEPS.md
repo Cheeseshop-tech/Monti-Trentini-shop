@@ -39,12 +39,16 @@ Verified working on 2026-06-03 with a test commit.
 
 ---
 
-## 3 · Security — rotate the Cloudinary key
+## 3 · Security — rotate the Cloudinary key — ✅ DONE (2026-06-03)
 
-During image setup, the Cloudinary API secret was visible on screen. Regenerate it:
-**Cloudinary → Settings → API Keys → Generate New API Key**, then disable the old
-active key (`954375434365952`). This does NOT affect the storefront — images are
-already delivered and don't need the secret.
+The exposed key **`954375434365952`** (cloud `sofcvmwa`) was **disabled** in the
+Cloudinary console (Settings → API Keys → toggle Active → off → confirm "Disable").
+Verified Disabled after reload. This neutralizes the secret that was visible on screen.
+The storefront is unaffected (images deliver via public URLs, no secret needed). Other
+active keys (`Root`, `mediaflows`) remain for any future uploads; disabling is reversible.
+
+> Note: the secret was never committed to the repo — `scripts/upload_to_cloudinary.py`
+> reads it from the `CLOUDINARY_URL` env var, so nothing in git needed scrubbing.
 
 ---
 
