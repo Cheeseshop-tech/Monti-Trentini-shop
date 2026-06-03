@@ -27,6 +27,7 @@ re-figure-out the steps. Add a new entry each time we finish a process.
 | 2 | **Upload product photos to Cloudinary by SKU code** | `scripts/README_cloudinary.md` + `scripts/upload_to_cloudinary.py` |
 | 3 | **Publish to GitHub + deploy to Netlify** | [`docs/guide-publish-github-netlify.md`](guide-publish-github-netlify.md) |
 | 4 | **Make an edit and redeploy** (the day-to-day loop) | [`docs/guide-publish-github-netlify.md`](guide-publish-github-netlify.md) § "The everyday loop" |
+| 5 | **Design folder → launch-ready URL** (reusable, generalized workflow notes) | [`docs/workflow-design-to-live-url.md`](workflow-design-to-live-url.md) |
 
 ---
 
