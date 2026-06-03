@@ -131,6 +131,21 @@ That's it — edit → commit → push → it's live.
 **Screenshots:** drop any into `docs/screenshots/` and reference them here, e.g.
 `![netlify import](screenshots/netlify-import.png)`.
 
+### ⚠️ Real gotchas hit on 2026-06-03 (READ THIS NEXT TIME)
+- **Netlify's button is "Add new project"** (not "Add new site").
+- **Creating a GitHub repo ≠ uploading your files.** I created a repo + connected Netlify,
+  and the site 404'd because the **local folder was never pushed** (no git *remote* was
+  set, so `git push` had never happened). **The fix:** connect the local folder to the
+  GitHub repo (a "remote") and **push** it — only then does Netlify have anything to
+  serve. GitHub Desktop does this in one "Publish/Push" click; the CLI way is
+  `git remote add origin <repo-url>` then `git push -u origin main`.
+- **Order that actually works:** (1) push local code to GitHub, (2) THEN point Netlify at
+  that repo. If Netlify is already connected to an empty repo, just pushing the code makes
+  it auto-deploy.
+- Netlify Drop (drag-and-drop a folder) deploys instantly **without** GitHub, but you lose
+  auto-deploy-on-push and the root `netlify.toml` redirect — so for this project, push to
+  GitHub instead.
+
 > 💡 Tip: I (Claude) can watch your screen while you do this and fill this table in for
 > you from what's *actually* there — just say "capture as I go" and I'll record the real
 > button names and paths into this guide.
