@@ -30,8 +30,9 @@ publish it and connect Netlify. ~10 minutes.
 ## 2 · Deploy on Netlify — ✅ DONE (auto-deploy live, 2026-06-03)
 
 GitHub repo: **`Cheeseshop-tech/Monti-Trentini-shop`**, deployed by Netlify site
-**`comforting-puppy-b2f75a`** (linked via *Site configuration → Build & deploy →
-Continuous deployment → Link to existing repository*). Settings (from `netlify.toml`):
+**`mt-e-comm`** → live at **`mt-e-comm.netlify.app`** (renamed 2026-06-03 from the
+original `comforting-puppy-b2f75a`). Linked via *Site configuration → Build & deploy →
+Continuous deployment → Link to existing repository*. Settings (from `netlify.toml`):
 **Build command:** empty · **Publish directory:** `design`.
 
 **Every `git push` to `main` now auto-deploys** — no more manual Netlify Drop.

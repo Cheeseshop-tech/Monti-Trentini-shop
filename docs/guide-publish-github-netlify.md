@@ -175,7 +175,8 @@ We later pushed the repo to GitHub and switched from Drop to **Git auto-deploy**
    → `git push -u origin main`). The repo already had an older web-upload, so we merged
    the unrelated histories (`git merge --allow-unrelated-histories`), then removed the
    stale duplicate files that left at the repo root.
-2. Reused the existing Drop site **`comforting-puppy-b2f75a`** instead of making a new one:
+2. Reused the existing Drop site **`comforting-puppy-b2f75a`** (later renamed to
+   **`mt-e-comm`** → `mt-e-comm.netlify.app`) instead of making a new one:
    **Site configuration → Build & deploy → Continuous deployment → Link to existing
    repository** → GitHub → picked the repo → branch `main`.
 3. Settings auto-filled from `netlify.toml`: **Build command:** empty · **Publish
