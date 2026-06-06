@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Monti Trentini — Operations Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/med2peg.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#064E22; --forest-2:#0A3D1D; --green:#009640; --sage:#70C883; --mint:#C8E2C5;
+    --cream:#FFFBDC; --paper:#FAF9F5; --card:#FFFFFF; --ink:#141413; --muted:#716A6A;
+    --line:#E7E2CF; --ocean:#0E7C9E; --red:#C0392B;
+    --shadow:0 1px 2px rgba(6,78,34,.05), 0 14px 38px rgba(6,78,34,.08);
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+    --sans:"futura-pt","Jost",-apple-system,sans-serif; --disp:"cora","Newsreader",Georgia,serif;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;
+    background-image:radial-gradient(rgba(6,78,34,.03) 1px,transparent 1px);background-size:24px 24px}
+  .disp{font-family:var(--disp);font-style:italic}
+  .head{background:linear-gradient(160deg,var(--forest),var(--forest-2));color:#fff;position:relative;overflow:hidden}
+  .head::after{content:"";position:absolute;inset:0;opacity:.1;
+    background-image:linear-gradient(135deg,transparent 46%,rgba(255,255,255,.5) 47%,transparent 48%),linear-gradient(45deg,transparent 46%,rgba(255,255,255,.5) 47%,transparent 48%);background-size:32px 32px}
+  .head-in{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:30px 28px 40px}
+  .topline{display:flex;align-items:center;gap:18px}
+  .logo-chip{background:#fff;border-radius:14px;padding:8px 12px;display:inline-flex}
+  .logo-chip img{height:44px;display:block}
+  .topline .motto{margin-left:auto;font-family:var(--disp);font-style:italic;color:#cfe3d6;font-size:15px}
+  .head h1{font-family:var(--disp);font-style:italic;font-weight:600;font-size:clamp(30px,4.5vw,46px);margin:26px 0 0;line-height:1.05}
+  .head .sub{color:#cfe3d6;font-size:16px;margin-top:10px;max-width:60ch}
+  /* dashboard */
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 28px 70px}
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:-44px;position:relative;z-index:2}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+  .stat .n{font-family:var(--disp);font-style:italic;font-size:30px;font-weight:600;line-height:1}
+  .stat .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:7px;font-weight:700}
+  .stat.green .n{color:var(--green)} .stat.ocean .n{color:var(--ocean)} .stat.red .n{color:var(--red)} .stat.forest .n{color:var(--forest)} .stat.amber .n{color:#B8860B}
+  /* tool cards */
+  .secttl{font-family:var(--disp);font-style:italic;font-size:22px;color:var(--forest);margin:40px 0 16px}
+  .tools{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .tool{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;text-decoration:none;color:inherit;display:flex;gap:18px;transition:.2s;box-shadow:var(--shadow)}
+  .tool:hover{transform:translateY(-3px);border-color:var(--sage)}
+  .tool .ic{width:52px;height:52px;border-radius:13px;flex:none;display:grid;place-items:center;font-size:24px;background:var(--mint)}
+  .tool.b1 .ic{background:rgba(0,150,64,.14)} .tool.b2 .ic{background:rgba(14,124,158,.14)} .tool.b3 .ic{background:rgba(184,134,11,.16)} .tool.b4 .ic{background:rgba(6,78,34,.1)}
+  .tool h3{font-family:var(--disp);font-style:italic;font-size:23px;color:var(--forest);margin:0}
+  .tool p{color:var(--muted);font-size:13.5px;margin:7px 0 0}
+  .tool .tag{display:inline-block;margin-top:11px;font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.05em}
+  .foot{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .foot b{color:var(--forest)}
+  @media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}.tools{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="head"><div class="head-in">
+  <div class="topline">
+    <span class="logo-chip"><img src="./brand/MontiTrentini_Logo.png" alt="Monti Trentini"></span>
+    <span class="motto disp">Casa Finco, casari dal 1925</span>
+  </div>
+  <h1 class="disp">Operations Portal</h1>
+  <div class="sub">One source of truth — catalog, inventory, pricing and commitments — feeding every Monti Trentini tool. Wholesale-first.</div>
+</div></div>
+
+<div class="wrap">
+  <div class="stats" id="stats"></div>
+
+  <div class="secttl disp">Tools</div>
+  <div class="tools">
+    <a class="tool b1" href="./proforma.html">
+      <div class="ic">🧾</div>
+      <div><h3 class="disp">Proforma Builder</h3>
+        <p>Build wholesale quotes live — class-of-trade pricing, freight line items, FIFO stock allocation, and one-click sale capture.</p>
+        <span class="tag">Quoting · priority #1</span></div>
+    </a>
+    <a class="tool b2" href="./report.html">
+      <div class="ic">📦</div>
+      <div><h3 class="disp">Inventory Movement Report</h3>
+        <p>Demand vs. supply by SKU — standing commitments, containers on the water, coverage gaps, and reorder / next-container recommendations.</p>
+        <span class="tag">Planning</span></div>
+    </a>
+    <a class="tool b3" href="./commitments.html">
+      <div class="ic">🤝</div>
+      <div><h3 class="disp">Commitments Review</h3>
+        <p>Confirm the standing customer plans parsed from the Italian ops notes — the team-input screen. Confirm, edit, or dismiss each.</p>
+        <span class="tag">Needs your input</span></div>
+    </a>
+    <a class="tool b4" href="./storefront.html">
+      <div class="ic">🏔️</div>
+      <div><h3 class="disp">Consumer Storefront</h3>
+        <p>The new direct-to-consumer face — Product of the Mountains, the full range with photography, driven by the same canonical catalog.</p>
+        <span class="tag">DTC · new</span></div>
+    </a>
+  </div>
+
+  <div class="foot">
+    <span>Built on the canonical schema (v1.2) · pricing-core + forecast-core · <b id="src">—</b></span>
+    <span class="disp">A hundred-year-long story does not happen by chance.</span>
+  </div>
+</div>
+
+<script>
+async function boot(){
+  let cat,inv,com;
+  try{ [cat,inv,com]=await Promise.all([
+    fetch("./catalog.json").then(r=>r.json()), fetch("./inventory.json").then(r=>r.json()), fetch("./commitments.json").then(r=>r.json())]);
+  }catch(e){ document.getElementById("stats").innerHTML=`<div class="stat"><div class="n">—</div><div class="l">load error</div></div>`; return; }
+  const skus=Object.values(inv.skus);
+  const onHand=skus.reduce((n,s)=>n+(s.casesAvail||0),0);
+  const inTransit=skus.reduce((n,s)=>n+(s.casesInTransit||0),0);
+  const arriving=skus.filter(s=>(s.casesInTransit||0)>0).length;
+  const plans=(com.commitments||[]).filter(c=>c.kind==="standing_plan").length;
+  const prods=cat.products.length, sku=cat.products.reduce((n,p)=>n+p.skus.length,0);
+  const stats=[
+    {n:prods, l:"Products", cls:"forest"},
+    {n:onHand.toLocaleString(), l:"Cases on hand", cls:"green"},
+    {n:inTransit.toLocaleString(), l:"Cases on the water", cls:"ocean"},
+    {n:arriving, l:"SKUs arriving", cls:"ocean"},
+    {n:plans, l:"Standing commitments", cls:"amber"},
+  ];
+  document.getElementById("stats").innerHTML=stats.map(s=>`<div class="stat ${s.cls}"><div class="n">${s.n}</div><div class="l">${s.l}</div></div>`).join("");
+  document.getElementById("src").textContent=`${prods} products / ${sku} SKUs · stock as of ${inv.lastUpdated||"—"}`;
+}
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Monti Trentini — Proforma Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Official brand fonts: Cora + Futura PT live in Adobe Typekit (kit med2peg) — loads on the real domain.
+     Web substitutes (Newsreader for Cora-italic, Jost for Futura PT) cover everywhere Typekit can't serve. -->
+<link rel="stylesheet" href="https://use.typekit.net/med2peg.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Official Monti Trentini palette (Brand_Guide_2026-05-24) */
+    --forest:#064E22; --forest-2:#0A3D1D; --green:#009640;     /* Forest / Italia Green */
+    --sage:#70C883; --mint:#C8E2C5;                            /* Pasture Sage / Alpine Mint */
+    --cream:#FFFBDC; --paper:#FAF9F5; --card:#FFFFFF;          /* Heritage Cream / Casa Paper / white */
+    --ink:#141413; --ink-2:#3A3A36; --muted:#716A6A;           /* Mountain Ink / Stone Charcoal */
+    --line:#E7E2CF; --line-2:#F0ECDD;
+    --ocean:#0E7C9E; --amber:#B8860B; --red:#C0392B;           /* functional status accents */
+    --shadow:0 1px 2px rgba(6,78,34,.05), 0 10px 30px rgba(6,78,34,.07);
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --sans:"futura-pt","Jost",-apple-system,sans-serif;        /* Futura PT → Jost */
+    --disp:"cora","Newsreader",Georgia,serif;                  /* Cora (italic) → Newsreader italic */
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:13.5px;line-height:1.45;
+    background-image:radial-gradient(rgba(6,78,34,.03) 1px,transparent 1px);background-size:22px 22px}
+  button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* ---------- masthead ---------- */
+  .mast{background:var(--card);border-bottom:1px solid var(--line);
+    box-shadow:0 1px 0 rgba(6,78,34,.04);position:sticky;top:0;z-index:30}
+  .mast-in{max-width:1480px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:18px}
+  .mast .logo{height:46px;width:auto;display:block;flex:none}
+  .lockup{padding-left:18px;border-left:1px solid var(--line)}
+  .eyebrow{font-size:10px;letter-spacing:1.7px;text-transform:uppercase;color:var(--green);font-weight:700}
+  .builder{font-family:var(--disp);font-style:italic;font-weight:500;font-size:21px;color:var(--forest);line-height:1.05;margin-top:1px}
+  .mast .grow{flex:1}
+  .mast .doc{text-align:right;font-size:11px;color:var(--muted)}
+  .mast .doc .motto{display:block;font-family:var(--disp);font-style:italic;font-size:14px;color:var(--forest);font-weight:500;margin-bottom:1px}
+
+  /* ---------- order header controls ---------- */
+  .controls{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:71px;z-index:20}
+  .controls-in{max-width:1480px;margin:0 auto;padding:13px 22px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field label{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:600}
+  .field input,.field select{background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    padding:8px 11px;min-width:120px;transition:.15s;font-weight:500}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,150,64,.12);background:#fff}
+  .field.cust input{min-width:210px}
+  .field.pct input{min-width:74px;font-family:var(--mono)}
+  /* segmented pickup/delivered */
+  .seg{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:2px}
+  .seg button{border:none;background:transparent;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;color:var(--muted);transition:.15s}
+  .seg button.on{background:var(--forest);color:#fff}
+
+  /* ---------- layout ---------- */
+  .stage{max-width:1480px;margin:0 auto;padding:18px 22px 60px;display:grid;grid-template-columns:1fr 372px;gap:22px;align-items:start}
+  @media(max-width:1080px){.stage{grid-template-columns:1fr}}
+
+  /* ---------- catalog panel ---------- */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+  .panel-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:#FBFAF4}
+  .panel-bar .ttl{font-family:var(--disp);font-style:italic;font-weight:600;font-size:16px;color:var(--forest)}
+  .panel-bar .ct{font-size:11px;color:var(--muted);font-weight:500}
+  .panel-bar .grow{flex:1}
+  .search{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 11px;min-width:200px}
+  .search:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,150,64,.12);background:#fff}
+  .catsel{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-weight:500}
+
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;
+    padding:10px 14px;background:#FBFAF4;border-bottom:1px solid var(--line);position:sticky;top:124px;z-index:5}
+  thead th.r{text-align:right}
+  tbody td{padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr.has-qty{background:linear-gradient(90deg,rgba(0,150,64,.05),transparent 55%)}
+  tbody tr.short{background:linear-gradient(90deg,rgba(192,57,43,.06),transparent 55%)}
+  tbody tr.inactive{opacity:.45}
+  tbody tr:hover{background:#FBFAF4}
+  .prod{display:flex;gap:11px}
+  .thumb{width:48px;height:48px;border-radius:9px;object-fit:cover;flex:none;background:var(--mint);border:1px solid var(--line)}
+  .pinfo{min-width:0}
+  .code{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--forest);background:#EEF4EF;padding:2px 6px;border-radius:5px;white-space:nowrap}
+  .pname{font-weight:600;margin-top:5px}
+  .pmeta{font-size:11px;color:var(--muted);margin-top:2px}
+  .pnote{font-size:11px;color:var(--ink-2);margin-top:5px;font-style:italic;max-width:330px;border-left:2px solid var(--line);padding-left:7px}
+  .commit-chip{display:inline-block;font-size:10.5px;font-weight:700;color:var(--forest);background:rgba(0,150,64,.1);padding:2px 7px;border-radius:999px;margin-top:5px}
+  .commit-chip.trig{color:var(--amber);background:rgba(184,134,11,.12);margin-left:5px}
+
+  .stk{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .stk .oh{font-weight:600}
+  .stk .oh.zero{color:#C2C7C0}
+  .stk .it{display:block;font-size:11px;color:var(--ocean);margin-top:2px}
+  .stk .ex{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
+  .stk .ex.warn{color:var(--red);font-weight:600}
+
+  .price{font-family:var(--mono);text-align:right;font-weight:600}
+  .price .u{font-size:10px;color:var(--muted)}
+  td.qtycell{text-align:right;width:88px}
+  .qty{width:66px;text-align:right;font-family:var(--mono);font-weight:600;background:#fff;border:1.5px solid var(--line);border-radius:8px;padding:7px 9px;transition:.15s}
+  .qty:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,150,64,.12)}
+  .qty.filled{border-color:var(--green);background:#F3FBF5}
+  td.linecell{text-align:right;width:118px}
+  .linetot{font-family:var(--mono);font-weight:700;font-size:14px}
+  .linetot.flash{animation:flash .5s ease}
+  @keyframes flash{0%{background:rgba(201,162,39,.35)}100%{background:transparent}}
+  .lbs{font-size:10.5px;color:var(--muted);font-family:var(--mono);display:block;margin-top:2px}
+  .alloc{margin-top:6px;font-size:10.5px;font-family:var(--mono)}
+  .alloc .ok{color:var(--green)} .alloc .sh{color:var(--red);font-weight:600}
+  .alloc .lot{color:var(--ink-2)}
+
+  /* ---------- proforma rail ---------- */
+  .rail{position:sticky;top:138px}
+  .ticket{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+  .ticket-head{background:linear-gradient(150deg,var(--forest),var(--forest-2));color:#fff;padding:16px 18px}
+  .ticket-head .k{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:#9ec6ab}
+  .ticket-head .billto{font-family:var(--disp);font-style:italic;font-size:20px;font-weight:600;margin-top:3px}
+  .ticket-head .billto.none{color:#7fa98c;font-style:italic;font-size:15px}
+  .terms{display:flex;flex-wrap:wrap;gap:5px;padding:13px 18px;border-bottom:1px dashed var(--line);background:#FBFAF4}
+  .tpill{font-size:10.5px;font-weight:600;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:4px 9px;color:var(--ink-2)}
+  .tpill b{color:var(--forest)}
+  .meter{padding:13px 18px;border-bottom:1px solid var(--line-2)}
+  .meter .row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+  .meter .bar{height:7px;background:var(--line-2);border-radius:99px;overflow:hidden}
+  .meter .fill{height:100%;background:linear-gradient(90deg,var(--green),var(--ocean));transition:width .35s ease;border-radius:99px}
+  .meter .gate{font-size:10.5px;margin-top:5px;color:var(--muted)}
+  .meter .gate b{color:var(--forest)}
+  .lines{padding:8px 18px}
+  .ln{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;font-size:12.5px;border-bottom:1px solid var(--line-2)}
+  .ln:last-child{border-bottom:none}
+  .ln .lbl{color:var(--ink-2)} .ln .lbl small{color:var(--muted);font-size:10.5px}
+  .ln .amt{font-family:var(--mono);font-weight:600}
+  .ln.sub .lbl{font-weight:700;color:var(--ink)} .ln.sub .amt{font-weight:700}
+  .ln.freight .lbl{color:var(--ocean)} .ln.freight .amt{color:var(--ocean)}
+  .grand{display:flex;justify-content:space-between;align-items:baseline;padding:15px 18px;background:var(--forest);color:#fff}
+  .grand .lbl{font-family:var(--disp);font-style:italic;font-size:17px;font-weight:600}
+  .grand .amt{font-family:var(--mono);font-size:22px;font-weight:600}
+  .alert{margin:0 18px 14px;padding:9px 12px;border-radius:8px;font-size:11.5px;font-weight:600}
+  .alert.warn{background:rgba(192,57,43,.08);color:var(--red)}
+  .alert.ok{background:rgba(0,150,64,.08);color:var(--green)}
+  .acts{display:flex;gap:8px;padding:0 18px 18px}
+  .btn{flex:1;border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:10px;font-weight:600;cursor:pointer;transition:.15s}
+  .btn:hover{border-color:var(--green);color:var(--forest)}
+  .btn.primary{background:var(--forest);color:#fff;border-color:var(--forest)}
+  .btn.primary:hover{background:var(--green)}
+  .empty{padding:40px 18px;text-align:center;color:var(--muted);font-size:12.5px}
+  .loaderr{padding:30px;color:var(--red);font-weight:600}
+  .mini{margin-left:8px;border:1px solid currentColor;background:transparent;color:inherit;border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.4px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(22px);background:var(--forest);color:#fff;padding:12px 22px;border-radius:11px;font-weight:600;box-shadow:0 12px 34px rgba(6,78,34,.28);opacity:0;transition:.25s;z-index:60;pointer-events:none;font-size:13px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .recch{font-size:10.5px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:0 18px 12px;display:flex;align-items:center;gap:6px}
+  .navlinks{display:flex;gap:4px;margin-right:6px}
+  .navlinks a{font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 11px;border-radius:7px;transition:.15s}
+  .navlinks a:hover{color:var(--forest);background:var(--paper)}
+  .navlinks a.on{color:var(--forest);background:var(--mint)}
+</style>
+</head>
+<body>
+<div class="mast"><div class="mast-in">
+  <img class="logo" src="./brand/MontiTrentini_Logo.png" alt="Monti Trentini — Formaggi & Tradizione">
+  <div class="lockup">
+    <div class="eyebrow">Wholesale</div>
+    <div class="builder">Proforma Builder</div>
+  </div>
+  <div class="grow"></div>
+  <nav class="navlinks">
+    <a href="./index.html">Portal</a>
+    <a href="./proforma.html" class="on">Proforma</a>
+    <a href="./report.html">Movement</a>
+    <a href="./commitments.html">Commitments</a>
+    <a href="./storefront.html">Storefront</a>
+  </nav>
+  <div class="doc"><span class="motto">Casa Finco · casari dal 1925</span><span id="srcDate">—</span></div>
+</div></div>
+
+<div class="controls"><div class="controls-in" id="controls">
+  <div class="field cust"><label>Customer / Bill to</label>
+    <input id="fCustomer" list="custList" placeholder="Select or type…" autocomplete="off"><datalist id="custList"></datalist></div>
+  <div class="field"><label>Class of trade</label><select id="fTier"></select></div>
+  <div class="field"><label>Freight basis</label>
+    <div class="seg" id="fBasis"><button data-b="pickup" class="on">Pickup</button><button data-b="delivered">Delivered</button></div></div>
+  <div class="field"><label>Volume break</label><select id="fVolume"></select></div>
+  <div class="field pct"><label>Custom ±%</label><input id="fCustom" type="number" step="0.5" placeholder="0"></div>
+</div></div>
+
+<div class="stage">
+  <div class="panel">
+    <div class="panel-bar">
+      <span class="ttl">Catalog</span><span class="ct" id="catCount">—</span>
+      <span class="grow"></span>
+      <select class="catsel" id="fCat"><option value="">All categories</option></select>
+      <input class="search" id="fSearch" placeholder="Search SKU, name…">
+    </div>
+    <div style="overflow:auto">
+    <table>
+      <thead><tr>
+        <th>Product</th><th>Stock</th>
+        <th class="r" id="thPrice">$/lb</th><th class="r">Cases</th><th class="r">Line total</th>
+      </tr></thead>
+      <tbody id="rows"><tr><td colspan="5" class="empty">Loading canonical data…</td></tr></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="rail"><div class="ticket">
+    <div class="ticket-head"><div class="k">Bill to</div><div class="billto none" id="tBillTo">No customer selected</div></div>
+    <div class="terms" id="tTerms"></div>
+    <div class="meter">
+      <div class="row"><span>Order weight</span><span id="mLbs" class="mono">0 lb</span></div>
+      <div class="bar"><div class="fill" id="mFill" style="width:0%"></div></div>
+      <div class="gate" id="mGate">Freight gate at <b>1,500 lb</b></div>
+    </div>
+    <div class="lines" id="tLines"></div>
+    <div id="tAlert"></div>
+    <div class="grand"><span class="lbl">Grand total</span><span class="amt" id="tGrand">$0.00</span></div>
+    <div class="recch" id="tRecorded" style="display:none"></div>
+    <div class="acts">
+      <button class="btn" id="btnClear">Clear</button>
+      <button class="btn" id="btnCsv">CSV</button>
+      <button class="btn" id="btnPrint">Print</button>
+      <button class="btn primary" id="btnRecord">Record sale</button>
+    </div>
+  </div></div>
+</div>
+
+<script src="./core/pricing-core.js"></script>
+<script>
+const PC = window.PricingCore;
+const TODAY = "2026-06-06";
+const money = n => "$" + Number(n||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const lbsFmt = n => Number(n||0).toLocaleString("en-US",{maximumFractionDigits:0});
+const esc = s => String(s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const titleCase = s => String(s||"").toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase());
+
+const S = { customer:"", tierId:"", basis:"pickup", volumeId:"", customPct:0, search:"", cat:"", qty:{} };
+let CONFIG, CATALOG, INVENTORY, COMMIT, SKUS=[], CMAP={};
+
+async function boot(){
+  try{
+    [CONFIG,CATALOG,INVENTORY,COMMIT] = await Promise.all([
+      fetch("./client.config.json").then(r=>r.json()),
+      fetch("./catalog.json").then(r=>r.json()),
+      fetch("./inventory.json").then(r=>r.json()),
+      fetch("./commitments.json").then(r=>r.json()),
+    ]);
+  }catch(e){ document.getElementById("rows").innerHTML=`<tr><td colspan="5" class="loaderr">Couldn't load canonical JSON: ${e.message}</td></tr>`; return; }
+
+  document.getElementById("srcDate").textContent = "Stock as of " + (INVENTORY.lastUpdated||"—");
+  // flatten catalog → SKU rows carrying product context
+  CATALOG.products.forEach(p=>p.skus.forEach(s=>{
+    SKUS.push(Object.assign({}, s, {productId:p.id, productName:p.name, category:p.category,
+      marketing:p.marketing||{}, name:titleCase(p.name)+" · "+s.packing}));
+  }));
+  COMMIT.commitments.forEach(c=>{ CMAP[c.skuCode]=c; });
+
+  // tier dropdown
+  const tierSel=document.getElementById("fTier");
+  CONFIG.pricing.tiers.forEach(t=>tierSel.add(new Option(`${t.label} (${t.adjustPct>=0?"+":""}${t.adjustPct}%)`, t.id)));
+  S.tierId = CONFIG.pricing.defaultTier || CONFIG.pricing.tiers[0].id; tierSel.value=S.tierId;
+  // volume dropdown
+  const volSel=document.getElementById("fVolume"); volSel.add(new Option("— none —",""));
+  CONFIG.pricing.volumeBreaks.forEach(v=>volSel.add(new Option(`${v.label} (${v.adjustPct>=0?"+":""}${v.adjustPct}%)`, v.id)));
+  // category dropdown
+  const cats=[...new Set(SKUS.map(s=>s.category))].sort();
+  const catSel=document.getElementById("fCat"); cats.forEach(c=>catSel.add(new Option(c,c)));
+  // customer datalist (from commitments)
+  const custs=new Set(); COMMIT.commitments.forEach(c=>{ if(c.customer)custs.add(c.customer); (c.alsoBuy||[]).forEach(a=>custs.add(a)); });
+  const dl=document.getElementById("custList"); [...custs].sort().forEach(c=>dl.appendChild(new Option(c,c)));
+
+  wire();
+  if(location.search.includes("demo")){   // dev-only sample seed (guarded; not used in normal use)
+    S.customer="Cowbell"; document.getElementById("fCustomer").value="Cowbell";
+    S.tierId="distributor"; document.getElementById("fTier").value="distributor";
+    S.basis="delivered"; document.querySelectorAll("#fBasis button").forEach(b=>b.classList.toggle("on",b.dataset.b==="delivered"));
+    S.qty={"02005":60,"02073":20,"03003":12};
+  }
+  render();
+}
+
+function wire(){
+  document.getElementById("fCustomer").addEventListener("input",e=>{S.customer=e.target.value;renderTicket();});
+  document.getElementById("fTier").addEventListener("change",e=>{S.tierId=e.target.value;render();});
+  document.getElementById("fVolume").addEventListener("change",e=>{S.volumeId=e.target.value;render();});
+  document.getElementById("fCustom").addEventListener("input",e=>{S.customPct=Number(e.target.value)||0;render();});
+  document.getElementById("fBasis").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+    S.basis=b.dataset.b; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); render();});
+  document.getElementById("fSearch").addEventListener("input",e=>{S.search=e.target.value;renderRows();});
+  document.getElementById("fCat").addEventListener("change",e=>{S.cat=e.target.value;renderRows();});
+  document.getElementById("btnClear").addEventListener("click",()=>{if(confirm("Clear all quantities?")){S.qty={};render();}});
+  document.getElementById("btnCsv").addEventListener("click",exportCsv);
+  document.getElementById("btnPrint").addEventListener("click",()=>window.print());
+  document.getElementById("btnRecord").addEventListener("click",recordSale);
+  document.addEventListener("click",e=>{ if(e.target&&e.target.id==="btnMissed") logMissed(); });
+  showRecorded();
+}
+
+const cloudImg = code => (CONFIG && CONFIG.images && CONFIG.images.cloud)
+  ? `https://res.cloudinary.com/${CONFIG.images.cloud}/image/upload/f_auto,q_auto,c_fill,w_96/${CONFIG.images.folder}/${code}.jpg` : "";
+const opts = ()=>({tierId:S.tierId, basis:S.basis, volumeId:S.volumeId, customPct:S.customPct});
+const matches = s => (!S.cat||s.category===S.cat) &&
+  (!S.search || (s.code+" "+s.name+" "+s.category).toLowerCase().includes(S.search.trim().toLowerCase()));
+
+function render(){ document.getElementById("thPrice").textContent = S.basis==="delivered"?"$/lb (merch)":"$/lb"; renderRows(); renderTicket(); }
+
+function renderRows(){
+  const tb=document.getElementById("rows");
+  const list=SKUS.filter(matches);
+  document.getElementById("catCount").textContent=`${list.length} of ${SKUS.length} SKUs`;
+  if(!list.length){ tb.innerHTML=`<tr><td colspan="5" class="empty">No SKUs match.</td></tr>`; return; }
+  tb.innerHTML=list.map(s=>{
+    const inv=INVENTORY.skus[s.code]; const c=CMAP[s.code];
+    const cases=S.qty[s.code]||0;
+    const unit=PC.quoteUnitPrice(s,opts(),CONFIG);
+    const lineTot=PC.quoteLineTotal(s,cases,opts(),CONFIG);
+    const lbs=PC.lineLbs(s,cases);
+    const inactive=c&&c.kind==="inactive";
+    // stock cell
+    let stk='<span class="oh zero">no rec</span>';
+    if(inv){
+      const oh=inv.casesAvail||0, it=inv.casesInTransit||0;
+      const onHandLots=(inv.lots||[]).filter(l=>l.status==="on_hand");
+      const exp=onHandLots.map(l=>l.expDate).filter(Boolean).sort()[0];
+      const dexp=exp?Math.floor((new Date(exp+"T00:00:00")-new Date(TODAY))/864e5):null;
+      stk=`<span class="oh ${oh?'':'zero'}">${oh} cs</span>`+
+        (it?`<span class="it">⚓ ${it} cs ETA</span>`:'')+
+        (exp?`<span class="ex ${dexp!==null&&dexp<60?'warn':''}">${dexp!==null&&dexp<60?'⚠ ':''}exp ${exp}</span>`:'');
+    }
+    // allocation feedback
+    let alloc='';
+    if(cases>0&&inv){
+      const a=PC.allocate(s.code,cases,INVENTORY);
+      const got=a.allocated.map(x=>`${x.cases} from ${String(x.lotNum).slice(0,8)}`).join(" + ");
+      alloc=`<div class="alloc">`+(a.totalAllocated>0?`<span class="ok">✓ ${a.totalAllocated} cs</span> <span class="lot">${got}</span>`:'')+
+        (a.shortfall>0?` <span class="sh">⚠ ${a.shortfall} short</span>`:'')+`</div>`;
+    }
+    // commitment chip
+    let chip='';
+    if(c&&c.kind==="standing_plan") chip=`<span class="commit-chip">${esc(c.customer)} ${c.casesPerPeriod}/mo</span>`+
+      (c.reorderBelowCases?`<span class="commit-chip trig">⚑ &lt;${c.reorderBelowCases}</span>`:'');
+    else if(inactive) chip=`<span class="commit-chip" style="color:var(--muted);background:#EFEDE6">inactive</span>`;
+    const note=inv&&inv.comment?`<div class="pnote">${esc(inv.comment)}${inv.commentEn?` — ${esc(inv.commentEn)}`:''}</div>`:'';
+    const rowcls=cases>0?(inv&&PC.allocate(s.code,cases,INVENTORY).shortfall>0?'short':'has-qty'):(inactive?'inactive':'');
+    return `<tr class="${rowcls}" data-code="${s.code}">
+      <td><div class="prod"><img class="thumb" loading="lazy" src="${cloudImg(s.image)}" alt="" onerror="this.style.visibility='hidden'">
+        <div class="pinfo"><span class="code">${s.code}</span><div class="pname">${esc(s.name)}</div>
+        <div class="pmeta">${esc(s.category)} · ${s.pack.netLb} lb/cs · ${s.availability}</div>${chip}${note}</div></div></td>
+      <td class="stk">${stk}</td>
+      <td class="price">${money(unit)}<span class="u">/lb</span></td>
+      <td class="qtycell"><input class="qty ${cases?'filled':''}" type="number" min="0" step="1" value="${cases||''}" placeholder="0" data-code="${s.code}"></td>
+      <td class="linecell"><span class="linetot">${cases?money(lineTot):'—'}</span>${cases?`<span class="lbs">${lbsFmt(lbs)} lb</span>`:''}</td>
+    </tr>`;
+  }).join("");
+  tb.querySelectorAll(".qty").forEach(inp=>{
+    inp.addEventListener("input",e=>{
+      let v=Math.max(0,Math.floor(Number(e.target.value)||0));
+      if(v)S.qty[e.target.dataset.code]=v; else delete S.qty[e.target.dataset.code];
+      // light update: just this row's line + ticket (avoid full re-render losing focus)
+      updateRow(e.target.closest("tr"), e.target.dataset.code); renderTicket();
+    });
+  });
+}
+
+function updateRow(tr,code){
+  const s=SKUS.find(x=>x.code===code); const cases=S.qty[code]||0; const inv=INVENTORY.skus[code];
+  const lineTot=PC.quoteLineTotal(s,cases,opts(),CONFIG); const lbs=PC.lineLbs(s,cases);
+  const cell=tr.querySelector(".linecell");
+  cell.innerHTML=`<span class="linetot flash">${cases?money(lineTot):'—'}</span>${cases?`<span class="lbs">${lbsFmt(lbs)} lb</span>`:''}`;
+  tr.querySelector(".qty").classList.toggle("filled",!!cases);
+  // allocation + row class
+  let short=false, alloc='';
+  if(cases>0&&inv){ const a=PC.allocate(code,cases,INVENTORY); short=a.shortfall>0;
+    const got=a.allocated.map(x=>`${x.cases} from ${String(x.lotNum).slice(0,8)}`).join(" + ");
+    alloc=`<div class="alloc">`+(a.totalAllocated>0?`<span class="ok">✓ ${a.totalAllocated} cs</span> <span class="lot">${got}</span>`:'')+
+      (a.shortfall>0?` <span class="sh">⚠ ${a.shortfall} short</span>`:'')+`</div>`;
+  }
+  let ex=tr.querySelector(".alloc"); if(ex)ex.remove();
+  if(alloc) tr.querySelector("td").insertAdjacentHTML("beforeend",alloc);
+  tr.className = cases>0?(short?'short':'has-qty'):'';
+}
+
+function renderTicket(){
+  const items=SKUS.filter(s=>S.qty[s.code]>0).map(s=>({sku:s,cases:S.qty[s.code]}));
+  const q=PC.quoteOrder(items,opts(),CONFIG);
+  // bill to
+  const bt=document.getElementById("tBillTo");
+  bt.textContent=S.customer||"No customer selected"; bt.classList.toggle("none",!S.customer);
+  // terms
+  const tier=CONFIG.pricing.tiers.find(t=>t.id===S.tierId)||{};
+  const vol=CONFIG.pricing.volumeBreaks.find(v=>v.id===S.volumeId);
+  document.getElementById("tTerms").innerHTML=
+    `<span class="tpill">Basis <b>${S.basis==="pickup"?"Pickup EXW":"Delivered"}</b></span>`+
+    `<span class="tpill">Trade <b>${esc(tier.label||"—")}</b></span>`+
+    (vol?`<span class="tpill">Vol <b>${esc(vol.label)}</b></span>`:'')+
+    (S.customPct?`<span class="tpill">Custom <b>${S.customPct>0?"+":""}${S.customPct}%</b></span>`:'');
+  // weight meter vs 1500 gate
+  const gate=CONFIG.pricing.freight.thresholdLb;
+  document.getElementById("mLbs").textContent=lbsFmt(q.totalLbs)+" lb";
+  document.getElementById("mFill").style.width=Math.min(100,q.totalLbs/gate*100)+"%";
+  document.getElementById("mGate").innerHTML = q.totalLbs>=gate
+    ? `<b>✓ Over ${lbsFmt(gate)} lb</b> — delivered freight at $0.30/lb`
+    : (S.basis==="delivered"&&q.totalLbs>0?`<b>${lbsFmt(gate-q.totalLbs)} lb</b> under gate — flat trucking + processing apply`
+      :`Freight gate at <b>${lbsFmt(gate)} lb</b>`);
+  // lines
+  const L=document.getElementById("tLines");
+  if(!items.length){ L.innerHTML=`<div class="empty">Enter case quantities to build the proforma.</div>`; }
+  else{
+    let h=`<div class="ln"><span class="lbl">Merchandise <small>${items.length} line${items.length>1?'s':''} · ${q.lines.reduce((n,l)=>n+l.cases,0)} cs</small></span><span class="amt">${money(q.merchSubtotal)}</span></div>`;
+    q.freight.forEach(f=>h+=`<div class="ln freight"><span class="lbl">${esc(f.label)}</span><span class="amt">${money(f.amount)}</span></div>`);
+    h+=`<div class="ln sub"><span class="lbl">Subtotal</span><span class="amt">${money(q.grandTotal)}</span></div>`;
+    L.innerHTML=h;
+  }
+  // grand
+  document.getElementById("tGrand").textContent=money(q.grandTotal);
+  // allocation alert
+  let shortLines=0,shortCs=0;
+  items.forEach(it=>{ const a=PC.allocate(it.sku.code,it.cases,INVENTORY); if(a.shortfall>0){shortLines++;shortCs+=a.shortfall;} });
+  const al=document.getElementById("tAlert");
+  if(!items.length) al.innerHTML='';
+  else if(shortLines) al.innerHTML=`<div class="alert warn">⚠ ${shortLines} line${shortLines>1?'s':''} short — ${shortCs} cs not covered <button class="mini" id="btnMissed">log missed</button></div>`;
+  else al.innerHTML=`<div class="alert ok">✓ All ${items.length} line${items.length>1?'s':''} fully allocated from stock</div>`;
+}
+
+/* ---------- MOVEMENT CAPTURE (history comes from this build) ----------
+   Finalizing a quote appends sold records; shortfalls log as missed.
+   Stored in localStorage now; same shape as canonical movement.json for later sync. */
+const LEDGER_KEY="mt-movement-ledger";
+const period = ()=>TODAY.slice(0,7);                       // "2026-06"
+const loadLedger = ()=>{ try{return JSON.parse(localStorage.getItem(LEDGER_KEY))||[];}catch(_){return[];} };
+const saveLedger = l=>{ try{localStorage.setItem(LEDGER_KEY,JSON.stringify(l));}catch(_){} };
+let toastT;
+function toast(msg){ let t=document.getElementById("toast"); if(!t){t=document.createElement("div");t.id="toast";t.className="toast";document.body.appendChild(t);}
+  t.textContent=msg; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2600); }
+
+function recordSale(){
+  const items=SKUS.filter(s=>S.qty[s.code]>0).map(s=>({sku:s,cases:S.qty[s.code]}));
+  if(!items.length){ alert("No lines to record — enter quantities first."); return; }
+  if(!S.customer && !confirm("No customer selected. Record the sale anyway?")) return;
+  const led=loadLedger(); const cust=S.customer||"(unspecified)"; let sold=0;
+  items.forEach(it=>{ led.push({period:period(), skuCode:it.sku.code, customer:cust,
+    soldCases:it.cases, missedCases:0, basis:S.basis, tier:S.tierId, at:TODAY}); sold+=it.cases; });
+  saveLedger(led);
+  toast(`✓ Recorded ${items.length} line(s) · ${sold} cs sold to ${cust}`);
+  showRecorded();
+}
+function logMissed(){
+  const items=SKUS.filter(s=>S.qty[s.code]>0).map(s=>({sku:s,cases:S.qty[s.code]}));
+  const led=loadLedger(); const cust=S.customer||"(unspecified)"; let miss=0;
+  items.forEach(it=>{ const a=PC.allocate(it.sku.code,it.cases,INVENTORY);
+    if(a.shortfall>0){ led.push({period:period(), skuCode:it.sku.code, customer:cust,
+      soldCases:0, missedCases:a.shortfall, reason:"stock short", at:TODAY}); miss+=a.shortfall; } });
+  if(!miss){ toast("No shortfalls to log."); return; }
+  saveLedger(led); toast(`⚠ Logged ${miss} cs as missed demand`); showRecorded();
+}
+function showRecorded(){
+  const led=loadLedger(); const el=document.getElementById("tRecorded");
+  const sold=led.reduce((n,r)=>n+(r.soldCases||0),0), miss=led.reduce((n,r)=>n+(r.missedCases||0),0);
+  if(!led.length){ el.style.display="none"; return; }
+  el.style.display="flex";
+  el.innerHTML=`<span>● ledger: ${led.length} record(s) · ${sold} cs sold · ${miss} missed</span>`;
+}
+
+function exportCsv(){
+  const items=SKUS.filter(s=>S.qty[s.code]>0).map(s=>({sku:s,cases:S.qty[s.code]}));
+  if(!items.length){ alert("No cases entered yet."); return; }
+  const q=PC.quoteOrder(items,opts(),CONFIG);
+  const rows=[["Monti Trentini — Proforma"],["Customer",S.customer||""],["Basis",S.basis],["Class of trade",S.tierId],
+    ["Volume break",S.volumeId||"none"],["Custom %",S.customPct],["Generated",new Date().toISOString().slice(0,10)],[],
+    ["Item","Product","Cases","Lbs","$/lb (merch)","Line total","Allocated","Short"]];
+  q.lines.forEach(l=>{ const a=PC.allocate(l.code,l.cases,INVENTORY);
+    rows.push([l.code,l.name,l.cases,l.lbs,l.unitPrice,l.lineTotal,
+      a.allocated.map(x=>`${x.cases}@${x.lotNum}`).join(" + "),a.shortfall||""]); });
+  rows.push([],["Merchandise subtotal","","","","","",q.merchSubtotal]);
+  q.freight.forEach(f=>rows.push([f.label,"","","","","",f.amount]));
+  rows.push(["GRAND TOTAL","","","","","",q.grandTotal]);
+  const csv=rows.map(r=>r.map(c=>{let s=c==null?"":String(c);return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}).join(",")).join("\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download=`MT_Proforma_${(S.customer||"draft").replace(/[^\w-]+/g,"_")}_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Monti Trentini — Commitments Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/med2peg.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#064E22; --green:#009640; --sage:#70C883; --mint:#C8E2C5;
+    --cream:#FFFBDC; --paper:#FAF9F5; --card:#FFFFFF;
+    --ink:#141413; --ink-2:#3A3A36; --muted:#716A6A; --line:#E7E2CF; --line-2:#F0ECDD;
+    --amber:#B8860B; --red:#C0392B;
+    --shadow:0 1px 2px rgba(6,78,34,.05), 0 10px 30px rgba(6,78,34,.07);
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --sans:"futura-pt","Jost",-apple-system,sans-serif; --disp:"cora","Newsreader",Georgia,serif;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:13.5px;line-height:1.45;
+    background-image:radial-gradient(rgba(6,78,34,.03) 1px,transparent 1px);background-size:22px 22px}
+  .mast{background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(6,78,34,.04);position:sticky;top:0;z-index:30}
+  .mast-in{max-width:1320px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:18px}
+  .mast .logo{height:46px;flex:none}
+  .lockup{padding-left:18px;border-left:1px solid var(--line)}
+  .eyebrow{font-size:10px;letter-spacing:1.7px;text-transform:uppercase;color:var(--green);font-weight:700}
+  .builder{font-family:var(--disp);font-style:italic;font-weight:500;font-size:21px;color:var(--forest);line-height:1.05;margin-top:1px}
+  .grow{flex:1}
+  .navlinks{display:flex;gap:4px} .navlinks a{font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 11px;border-radius:7px}
+  .navlinks a:hover{color:var(--forest);background:var(--paper)} .navlinks a.on{color:var(--forest);background:var(--mint)}
+  .wrap{max-width:1320px;margin:0 auto;padding:20px 22px 70px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:var(--shadow)}
+  .card .n{font-family:var(--disp);font-style:italic;font-size:30px;font-weight:600;line-height:1}
+  .card .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:7px;font-weight:700}
+  .card.green .n{color:var(--green)} .card.amber .n{color:var(--amber)} .card.forest .n{color:var(--forest)} .card.muted .n{color:var(--muted)}
+  .bar{display:flex;align-items:center;gap:8px;margin:22px 0 12px;flex-wrap:wrap}
+  .bar .ttl{font-family:var(--disp);font-style:italic;font-weight:600;font-size:19px;color:var(--forest);margin-right:6px}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
+  .chip:hover{border-color:var(--green);color:var(--forest)} .chip.on{background:var(--forest);color:#fff;border-color:var(--forest)} .chip .c{opacity:.7;margin-left:4px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;padding:11px 14px;background:#FBFAF4;border-bottom:1px solid var(--line)}
+  tbody td{padding:12px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none} tbody tr:hover{background:#FBFAF4}
+  tbody tr.confirmed{background:linear-gradient(90deg,rgba(0,150,64,.06),transparent 55%)}
+  tbody tr.dismissed{opacity:.4}
+  .code{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--forest);background:#EEF4EF;padding:2px 6px;border-radius:5px}
+  .pname{font-weight:600;margin-top:5px} .note{font-size:11.5px;color:var(--ink-2);font-style:italic;margin-top:5px;max-width:340px;border-left:2px solid var(--line);padding-left:7px}
+  .note .en{font-style:normal;color:var(--forest)}
+  .plan{font-family:var(--mono);font-weight:600}
+  .field{display:inline-flex;flex-direction:column;gap:3px;margin-right:8px}
+  .field label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+  .field input{border:1px solid var(--line);border-radius:7px;padding:6px 8px;font-family:var(--sans);font-weight:500;background:var(--paper)}
+  .field input:focus{outline:none;border-color:var(--green);background:#fff}
+  .field input.s{width:130px} .field input.n{width:64px;font-family:var(--mono)}
+  .acts{display:flex;gap:6px;margin-top:4px}
+  .b{border:1px solid var(--line);background:var(--card);border-radius:7px;padding:6px 12px;font-weight:700;font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:.4px}
+  .b.ok{background:var(--forest);color:#fff;border-color:var(--forest)} .b.ok:hover{background:var(--green)}
+  .b:hover{border-color:var(--green);color:var(--forest)}
+  .badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px}
+  .badge.plan{background:rgba(0,150,64,.12);color:var(--green)} .badge.review{background:rgba(184,134,11,.14);color:var(--amber)}
+  .badge.inactive{background:#EFEDE6;color:var(--muted)} .badge.confirmed{background:var(--forest);color:#fff} .badge.dismissed{background:#EFEDE6;color:var(--muted)}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(22px);background:var(--forest);color:#fff;padding:12px 22px;border-radius:11px;font-weight:600;box-shadow:0 12px 34px rgba(6,78,34,.28);opacity:0;transition:.25s;z-index:60;font-size:13px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .exp{margin-left:auto;display:flex;gap:8px}
+</style>
+</head>
+<body>
+<div class="mast"><div class="mast-in">
+  <img class="logo" src="./brand/MontiTrentini_Logo.png" alt="Monti Trentini">
+  <div class="lockup"><div class="eyebrow">Wholesale</div><div class="builder">Commitments Review</div></div>
+  <div class="grow"></div>
+  <nav class="navlinks">
+    <a href="./index.html">Portal</a><a href="./proforma.html">Proforma</a>
+    <a href="./report.html">Movement</a><a href="./commitments.html" class="on">Commitments</a><a href="./storefront.html">Storefront</a>
+  </nav>
+</div></div>
+<div class="wrap">
+  <div class="stats" id="stats"></div>
+  <div class="bar">
+    <span class="ttl">Standing customer plans</span>
+    <span id="filters"></span>
+    <span class="exp"><button class="b" id="btnExport">Export confirmed</button></span>
+  </div>
+  <div class="panel"><table>
+    <thead><tr><th>Product</th><th>Source note</th><th>Standing plan</th><th>Status / actions</th></tr></thead>
+    <tbody id="rows"><tr><td colspan="4" style="padding:30px;color:var(--muted)">Loading…</td></tr></tbody>
+  </table></div>
+</div>
+<script>
+const esc=s=>String(s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const titleCase=s=>String(s||"").toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase());
+const RKEY="mt-commitments-review";
+let COMMIT,NAMES={},ITEMS=[],S={filter:"all"};
+const review=()=>{try{return JSON.parse(localStorage.getItem(RKEY))||{};}catch(_){return{};}};
+const saveReview=r=>{try{localStorage.setItem(RKEY,JSON.stringify(r));}catch(_){}};
+let toastT; function toast(m){let t=document.getElementById("t");if(!t){t=document.createElement("div");t.id="t";t.className="toast";document.body.appendChild(t);}t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2200);}
+
+async function boot(){
+  let CATALOG;
+  try{ [COMMIT,CATALOG]=await Promise.all([fetch("./commitments.json").then(r=>r.json()),fetch("./catalog.json").then(r=>r.json())]); }
+  catch(e){ document.getElementById("rows").innerHTML=`<tr><td colspan="4" style="padding:30px;color:#C0392B">Load error: ${e.message}</td></tr>`; return; }
+  CATALOG.products.forEach(p=>p.skus.forEach(s=>NAMES[s.code]=titleCase(p.name)+" · "+s.packing));
+  // unify confident commitments + needs-review into one list
+  (COMMIT.commitments||[]).forEach(c=>{
+    if(c.kind==="standing_plan") ITEMS.push({code:c.skuCode,type:"plan",note:c.note,noteEn:c.noteEn,
+      g:{customer:c.customer,casesPerPeriod:c.casesPerPeriod,reorderBelowCases:c.reorderBelowCases||"",alsoBuy:c.alsoBuy||[]}});
+    else if(c.kind==="inactive") ITEMS.push({code:c.skuCode,type:"inactive",note:c.note,noteEn:c.noteEn,g:{}});
+  });
+  (COMMIT._needsReview||[]).forEach(c=>ITEMS.push({code:c.skuCode,type:"review",note:c.note,noteEn:c.noteEn,
+    g:{customer:(c.guess&&c.guess.customer)||"",casesPerPeriod:(c.guess&&c.guess.casesPerPeriod)||"",reorderBelowCases:(c.guess&&c.guess.reorderBelowCases)||"",alsoBuy:(c.guess&&c.guess.alsoBuy)||[]}}));
+  document.getElementById("btnExport").addEventListener("click",exportConfirmed);
+  render();
+}
+
+function statusOf(code){ return review()[code]||null; }
+
+function render(){
+  const rv=review();
+  const confirmed=ITEMS.filter(i=>rv[i.code]&&rv[i.code].status==="confirmed").length;
+  const plans=ITEMS.filter(i=>i.type==="plan").length;
+  const rev=ITEMS.filter(i=>i.type==="review").length;
+  const inact=ITEMS.filter(i=>i.type==="inactive").length;
+  document.getElementById("stats").innerHTML=[
+    {n:plans,l:"Auto-extracted plans",cls:"green"},
+    {n:rev,l:"Need review",cls:"amber"},
+    {n:confirmed,l:"Confirmed by you",cls:"forest"},
+    {n:inact,l:"Inactive / no market",cls:"muted"},
+  ].map(s=>`<div class="card ${s.cls}"><div class="n">${s.n}</div><div class="l">${s.l}</div></div>`).join("");
+
+  const filters=[
+    {id:"all",label:"All",t:()=>true},
+    {id:"review",label:"Need review",t:i=>i.type==="review"&&!(rv[i.code])},
+    {id:"plan",label:"Auto plans",t:i=>i.type==="plan"},
+    {id:"confirmed",label:"Confirmed",t:i=>rv[i.code]&&rv[i.code].status==="confirmed"},
+    {id:"inactive",label:"Inactive",t:i=>i.type==="inactive"},
+  ];
+  const fb=document.getElementById("filters");
+  fb.innerHTML=filters.map(f=>`<button class="chip ${f.id===S.filter?'on':''}" data-f="${f.id}">${f.label}<span class="c">${ITEMS.filter(f.t).length}</span></button>`).join(" ");
+  fb.querySelectorAll(".chip").forEach(ch=>ch.onclick=()=>{S.filter=ch.dataset.f;render();});
+
+  const test=filters.find(f=>f.id===S.filter).t;
+  const list=ITEMS.filter(test);
+  document.getElementById("rows").innerHTML=list.map(i=>{
+    const st=rv[i.code];
+    const badge = st? (st.status==="confirmed"?`<span class="badge confirmed">✓ Confirmed</span>`:`<span class="badge dismissed">Dismissed</span>`)
+      : (i.type==="plan"?`<span class="badge plan">Auto plan</span>`:i.type==="inactive"?`<span class="badge inactive">Inactive</span>`:`<span class="badge review">Needs review</span>`);
+    const note=`<div class="note">${esc(i.note)}${i.noteEn?` — <span class="en">${esc(i.noteEn)}</span>`:''}</div>`;
+    let plan, actions;
+    if(i.type==="inactive"){
+      plan=`<span style="color:var(--muted)">No market — exclude from demand</span>`;
+      actions=`<button class="b ok" data-act="confirm" data-code="${i.code}">Confirm inactive</button>`;
+    } else {
+      const cur=st||i.g;
+      plan=`<div class="acts">
+        <span class="field"><label>Customer</label><input class="s" data-f="customer" data-code="${i.code}" value="${esc(cur.customer||'')}" placeholder="customer"></span>
+        <span class="field"><label>Cases/mo</label><input class="n" data-f="casesPerPeriod" data-code="${i.code}" value="${esc(cur.casesPerPeriod||'')}" placeholder="—"></span>
+        <span class="field"><label>Reorder &lt;</label><input class="n" data-f="reorderBelowCases" data-code="${i.code}" value="${esc(cur.reorderBelowCases||'')}" placeholder="—"></span>
+      </div>${(i.g.alsoBuy&&i.g.alsoBuy.length)?`<div style="font-size:10.5px;color:var(--muted);margin-top:4px">also: ${i.g.alsoBuy.map(esc).join(', ')}</div>`:''}`;
+      actions=`<button class="b ok" data-act="confirm" data-code="${i.code}">${st&&st.status==="confirmed"?'Update':'Confirm'}</button>
+               <button class="b" data-act="dismiss" data-code="${i.code}">Dismiss</button>`;
+    }
+    return `<tr class="${st?(st.status):''}">
+      <td><span class="code">${i.code}</span><div class="pname">${esc(NAMES[i.code]||i.code)}</div></td>
+      <td>${note}</td><td>${plan}</td>
+      <td>${badge}<div class="acts" style="margin-top:8px">${actions}</div></td>
+    </tr>`;
+  }).join("")||`<tr><td colspan="4" style="padding:24px;color:var(--muted)">None.</td></tr>`;
+
+  document.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{
+    const code=b.dataset.code, rv=review();
+    if(b.dataset.act==="dismiss"){ rv[code]={status:"dismissed"}; }
+    else {
+      const row=b.closest("tr"); const get=f=>{const el=row.querySelector(`[data-f="${f}"]`);return el?el.value.trim():"";};
+      rv[code]={status:"confirmed", customer:get("customer"), casesPerPeriod:Number(get("casesPerPeriod"))||null,
+        reorderBelowCases:Number(get("reorderBelowCases"))||null, cadence:"monthly"};
+    }
+    saveReview(rv); toast(b.dataset.act==="dismiss"?`Dismissed ${code}`:`✓ Confirmed ${code}`); render();
+  });
+}
+
+function exportConfirmed(){
+  const rv=review(); const conf=Object.entries(rv).filter(([,v])=>v.status==="confirmed");
+  if(!conf.length){ toast("Nothing confirmed yet."); return; }
+  const out={schemaVersion:"1.2",clientId:"monti-trentini",confirmedAt:"2026-06-06",
+    commitments:conf.map(([code,v])=>({skuCode:code,customer:v.customer||null,cadence:v.cadence||"monthly",
+      casesPerPeriod:v.casesPerPeriod,reorderBelowCases:v.reorderBelowCases,status:"active",confirmedBy:"team-review"}))};
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(out,null,2)],{type:"application/json"}));
+  a.download="commitments.confirmed.json"; document.body.appendChild(a); a.click(); a.remove();
+  toast(`Exported ${conf.length} confirmed commitment(s)`);
+}
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Monti Trentini — Inventory Movement Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/med2peg.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#064E22; --forest-2:#0A3D1D; --green:#009640; --sage:#70C883; --mint:#C8E2C5;
+    --cream:#FFFBDC; --paper:#FAF9F5; --card:#FFFFFF;
+    --ink:#141413; --ink-2:#3A3A36; --muted:#716A6A; --line:#E7E2CF; --line-2:#F0ECDD;
+    --ocean:#0E7C9E; --amber:#B8860B; --red:#C0392B;
+    --shadow:0 1px 2px rgba(6,78,34,.05), 0 10px 30px rgba(6,78,34,.07);
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --sans:"futura-pt","Jost",-apple-system,sans-serif;
+    --disp:"cora","Newsreader",Georgia,serif;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:13.5px;line-height:1.45;
+    background-image:radial-gradient(rgba(6,78,34,.03) 1px,transparent 1px);background-size:22px 22px}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  /* masthead */
+  .mast{background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(6,78,34,.04);position:sticky;top:0;z-index:30}
+  .mast-in{max-width:1480px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:18px}
+  .mast .logo{height:46px;width:auto;flex:none}
+  .lockup{padding-left:18px;border-left:1px solid var(--line)}
+  .eyebrow{font-size:10px;letter-spacing:1.7px;text-transform:uppercase;color:var(--green);font-weight:700}
+  .builder{font-family:var(--disp);font-style:italic;font-weight:500;font-size:21px;color:var(--forest);line-height:1.05;margin-top:1px}
+  .grow{flex:1}
+  .navlinks{display:flex;gap:4px;margin-right:6px}
+  .navlinks a{font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 11px;border-radius:7px;transition:.15s}
+  .navlinks a:hover{color:var(--forest);background:var(--paper)} .navlinks a.on{color:var(--forest);background:var(--mint)}
+  .doc{text-align:right;font-size:11px;color:var(--muted)}
+  .doc .motto{display:block;font-family:var(--disp);font-style:italic;font-size:14px;color:var(--forest);font-weight:500;margin-bottom:1px}
+  .wrap{max-width:1480px;margin:0 auto;padding:20px 22px 70px}
+  /* stat cards */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:var(--shadow)}
+  .card .n{font-family:var(--disp);font-style:italic;font-size:30px;font-weight:600;line-height:1}
+  .card .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:7px;font-weight:700}
+  .card.red .n{color:var(--red)} .card.green .n{color:var(--green)} .card.ocean .n{color:var(--ocean)}
+  .card.forest .n{color:var(--forest)} .card.amber .n{color:var(--amber)}
+  /* controls */
+  .bar{display:flex;align-items:center;gap:10px;margin:22px 0 12px;flex-wrap:wrap}
+  .bar .ttl{font-family:var(--disp);font-style:italic;font-weight:600;font-size:19px;color:var(--forest)}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--green);color:var(--forest)} .chip.on{background:var(--forest);color:#fff;border-color:var(--forest)}
+  .chip .c{opacity:.7;margin-left:4px}
+  .hz{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+  .hz select{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-weight:600;color:var(--ink)}
+  .note-banner{background:var(--mint);border:1px solid var(--sage);border-radius:10px;padding:9px 14px;font-size:11.5px;color:var(--forest);margin-bottom:12px}
+  /* table */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;padding:11px 14px;background:#FBFAF4;border-bottom:1px solid var(--line)}
+  thead th.r{text-align:right}
+  tbody td{padding:12px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none} tbody tr:hover{background:#FBFAF4}
+  tbody tr.reorder{background:linear-gradient(90deg,rgba(192,57,43,.05),transparent 55%)}
+  tbody tr.inactive{opacity:.45}
+  .prod{display:flex;gap:11px} .thumb{width:44px;height:44px;border-radius:9px;object-fit:cover;flex:none;background:var(--mint);border:1px solid var(--line)} .pinfo{min-width:0}
+  .code{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--forest);background:#EEF4EF;padding:2px 6px;border-radius:5px;white-space:nowrap}
+  .pname{font-weight:600;margin-top:5px} .pmeta{font-size:11px;color:var(--muted);margin-top:2px}
+  .pnote{font-size:11px;color:var(--ink-2);margin-top:5px;font-style:italic;max-width:300px;border-left:2px solid var(--line);padding-left:7px}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+  .num .u{font-size:10px;color:var(--muted)} .num.zero{color:#C2C7C0}
+  .eta{display:block;font-size:10.5px;color:var(--ocean);margin-top:2px;font-family:var(--mono)}
+  .demand{font-weight:700} .demand small{display:block;font-size:10px;color:var(--muted);font-weight:500;font-family:var(--sans)}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .pill.reorder{background:rgba(192,57,43,.1);color:var(--red)} .pill.container{background:rgba(14,124,158,.12);color:var(--ocean)}
+  .pill.ok{background:rgba(0,150,64,.1);color:var(--green)} .pill.gray{background:#EFEDE6;color:var(--muted)}
+  .yoy.up{color:var(--green);font-weight:700} .yoy.down{color:var(--red);font-weight:700} .yoy.na{color:#C2C7C0}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:11.5px;color:var(--muted)}
+  .legend b{color:var(--forest)}
+  .loaderr{padding:30px;color:var(--red);font-weight:600}
+</style>
+</head>
+<body>
+<div class="mast"><div class="mast-in">
+  <img class="logo" src="./brand/MontiTrentini_Logo.png" alt="Monti Trentini">
+  <div class="lockup"><div class="eyebrow">Wholesale</div><div class="builder">Inventory Movement Report</div></div>
+  <div class="grow"></div>
+  <nav class="navlinks">
+    <a href="./index.html">Portal</a><a href="./proforma.html">Proforma</a>
+    <a href="./report.html" class="on">Movement</a><a href="./commitments.html">Commitments</a><a href="./storefront.html">Storefront</a>
+  </nav>
+  <div class="doc"><span class="motto">Casa Finco · casari dal 1925</span><span id="srcDate">—</span></div>
+</div></div>
+
+<div class="wrap">
+  <div class="stats" id="stats"></div>
+  <div class="bar">
+    <span class="ttl">Demand vs. supply</span>
+    <span id="filters"></span>
+    <span class="hz">Horizon
+      <select id="hz"><option value="1">1 month</option><option value="3" selected>3 months</option><option value="6">6 months</option></select>
+    </span>
+  </div>
+  <div class="note-banner" id="srcNote"></div>
+  <div class="panel">
+    <table>
+      <thead><tr>
+        <th>Product</th><th class="r">On hand</th><th class="r">On the water</th>
+        <th class="r">Committed/mo</th><th class="r">Run-rate</th><th class="r">YoY</th>
+        <th class="r">Need (horizon)</th><th class="r">Coverage</th><th>Recommendation</th>
+      </tr></thead>
+      <tbody id="rows"><tr><td colspan="9" style="padding:30px;color:var(--muted)">Loading…</td></tr></tbody>
+    </table>
+  </div>
+  <div class="legend">
+    <span><b>Committed/mo</b> = standing customer plans (from the Italian notes)</span>
+    <span><b>Run-rate</b> = captured sold + missed (this build) — accrues over time</span>
+    <span><b>Coverage</b> = on-hand + in-transit − projected need</span>
+  </div>
+</div>
+
+<script src="./core/forecast-core.js"></script>
+<script>
+const FC = window.ForecastCore;
+const lbsFmt = n => Number(n||0).toLocaleString("en-US",{maximumFractionDigits:1});
+const esc = s => String(s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const titleCase = s => String(s||"").toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase());
+const fmtEta = iso => iso ? new Date(iso+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"}) : "";
+
+let CATALOG, INVENTORY, COMMIT, CONFIG, MOVEMENT={records:[]}, NAMES={}, S={filter:"all",horizon:3};
+
+async function boot(){
+  try{
+    [CATALOG,INVENTORY,COMMIT,CONFIG] = await Promise.all([
+      fetch("./catalog.json").then(r=>r.json()), fetch("./inventory.json").then(r=>r.json()),
+      fetch("./commitments.json").then(r=>r.json()), fetch("./client.config.json").then(r=>r.json()),
+    ]);
+  }catch(e){ document.getElementById("rows").innerHTML=`<tr><td colspan="9" class="loaderr">Couldn't load canonical JSON: ${e.message}</td></tr>`; return; }
+  // optional canonical movement.json + the localStorage capture ledger
+  let canon=[]; try{ canon=(await fetch("./movement.json").then(r=>r.ok?r.json():null))?.records||[]; }catch(_){}
+  let ledger=[]; try{ ledger=JSON.parse(localStorage.getItem("mt-movement-ledger"))||[]; }catch(_){}
+  MOVEMENT={records:[...canon,...ledger]};
+  document.getElementById("srcDate").textContent="Stock as of "+(INVENTORY.lastUpdated||"—");
+  CATALOG.products.forEach(p=>p.skus.forEach(s=>{ NAMES[s.code]={name:titleCase(p.name)+" · "+s.packing, category:p.category}; }));
+  document.getElementById("hz").addEventListener("change",e=>{S.horizon=+e.target.value;render();});
+  render();
+}
+
+function dataBundle(){ return {commitments:COMMIT, inventory:INVENTORY, movement:MOVEMENT, config:CONFIG}; }
+
+function render(){
+  const codes=Object.keys(INVENTORY.skus);
+  const rep=FC.report(codes, dataBundle(), S.horizon);
+  const inactiveCodes=new Set((COMMIT.commitments||[]).filter(c=>c.kind==="inactive").map(c=>c.skuCode));
+  rep.forEach(r=>r._inactive=inactiveCodes.has(r.code));
+
+  // stats
+  const reorder=rep.filter(r=>r.reorder && !r._inactive);
+  const containers=rep.filter(r=>r.flagContainer && !r._inactive);
+  const onHand=rep.reduce((n,r)=>n+r.onHand,0), inTr=rep.reduce((n,r)=>n+r.inTransit,0);
+  const committed=rep.reduce((n,r)=>n+r.committedMonthly,0);
+  const stats=[
+    {n:reorder.length, l:"SKUs to reorder", cls:"red"},
+    {n:containers.length, l:"Container pulls flagged", cls:"ocean"},
+    {n:onHand.toLocaleString(), l:"Cases on hand", cls:"green"},
+    {n:inTr.toLocaleString(), l:"Cases on the water", cls:"ocean"},
+    {n:lbsFmt(committed)+"·cs", l:"Committed / month", cls:"forest"},
+  ];
+  document.getElementById("stats").innerHTML=stats.map(s=>`<div class="card ${s.cls}"><div class="n">${s.n}</div><div class="l">${s.l}</div></div>`).join("");
+
+  const hist=MOVEMENT.records.length;
+  document.getElementById("srcNote").innerHTML = hist
+    ? `Projections use <b>${hist}</b> captured movement record(s) + standing commitments. Run-rate &amp; YoY sharpen as more sell-through is recorded in the Proforma tool.`
+    : `No sell-through captured yet — projections are <b>commitment-driven</b> (from the Italian ops notes). Run-rate &amp; YoY begin accruing as reps record sales in the Proforma tool.`;
+
+  // filters
+  const filters=[
+    {id:"all",label:"All",test:()=>true},
+    {id:"reorder",label:"Needs reorder",test:r=>r.reorder&&!r._inactive},
+    {id:"container",label:"Container pull",test:r=>r.flagContainer&&!r._inactive},
+    {id:"committed",label:"Has commitment",test:r=>r.committedMonthly>0},
+    {id:"water",label:"On the water",test:r=>r.inTransit>0},
+  ];
+  const fb=document.getElementById("filters");
+  fb.innerHTML=filters.map(f=>`<button class="chip ${f.id===S.filter?'on':''}" data-f="${f.id}">${f.label}<span class="c">${rep.filter(f.test).length}</span></button>`).join(" ");
+  fb.querySelectorAll(".chip").forEach(ch=>ch.onclick=()=>{S.filter=ch.dataset.f;render();});
+
+  const test=filters.find(f=>f.id===S.filter).test;
+  const list=rep.filter(test);
+  document.getElementById("rows").innerHTML = !list.length ? `<tr><td colspan="9" style="padding:24px;color:var(--muted)">None.</td></tr>` :
+   list.map(r=>{
+    const nm=NAMES[r.code]||{name:r.code,category:""};
+    const inv=INVENTORY.skus[r.code];
+    const note=inv&&inv.comment?`<div class="pnote">${esc(inv.comment)}</div>`:'';
+    const yoy = r.yoy==null?`<span class="yoy na">—</span>`:`<span class="yoy ${r.yoy>=0?'up':'down'}">${r.yoy>=0?'+':''}${r.yoy}%</span>`;
+    const rr = r.runRate==null?`<span class="num zero">—</span>`:`<span class="num">${r.runRate}<span class="u">/mo</span></span>`;
+    let rec;
+    if(r._inactive) rec=`<span class="pill gray">Inactive</span>`;
+    else if(r.flagContainer) rec=`<span class="pill container">⚓ Pull container · ${r.reorderCases} cs</span>`;
+    else if(r.reorder) rec=`<span class="pill reorder">↻ Reorder ${r.reorderCases} cs</span>`;
+    else if(r.hasSignal) rec=`<span class="pill ok">✓ Covered</span>`;
+    else rec=`<span class="pill gray">No signal</span>`;
+    const cov = r.gap>0?`<span class="num" style="color:var(--red)">−${r.gap}</span>`:`<span class="num" style="color:var(--green)">+${Math.abs(r.gap)}</span>`;
+    const cloud=CONFIG.images||{};
+    const img=cloud.cloud?`https://res.cloudinary.com/${cloud.cloud}/image/upload/f_auto,q_auto,c_fill,w_88/${cloud.folder}/${r.code}.jpg`:"";
+    return `<tr class="${r._inactive?'inactive':(r.reorder?'reorder':'')}">
+      <td><div class="prod"><img class="thumb" loading="lazy" src="${img}" alt="" onerror="this.style.visibility='hidden'">
+        <div class="pinfo"><span class="code">${r.code}</span><div class="pname">${esc(nm.name)}</div><div class="pmeta">${esc(nm.category)}</div>${note}</div></div></td>
+      <td><span class="num ${r.onHand?'':'zero'}">${r.onHand}<span class="u">cs</span></span></td>
+      <td>${r.inTransit?`<span class="num" style="color:var(--ocean)">${r.inTransit}<span class="u">cs</span></span><span class="eta">⚓ ${fmtEta(r.nextEta)}</span>`:'<span class="num zero">—</span>'}</td>
+      <td><span class="num ${r.committedMonthly?'':'zero'}">${r.committedMonthly||'—'}</span></td>
+      <td>${rr}</td><td style="text-align:right">${yoy}</td>
+      <td><span class="num demand">${r.demand}<small>${r.horizonMonths} mo</small></span></td>
+      <td>${cov}</td><td>${rec}</td>
+    </tr>`;
+  }).join("");
+}
+boot();
+</script>
+</body>
+</html>
