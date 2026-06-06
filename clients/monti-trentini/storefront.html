@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Monti Trentini — Italian Alpine Cheese, since 1925</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/med2peg.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600;0,6..72,500;0,6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#064E22; --forest-2:#0A3D1D; --green:#009640; --sage:#70C883; --mint:#C8E2C5;
+    --cream:#FFFBDC; --paper:#FAF9F5; --card:#FFFFFF; --ink:#141413; --muted:#716A6A;
+    --line:#E7E2CF; --red:#CE2B37;
+    --sans:"futura-pt","Jost",-apple-system,sans-serif; --disp:"cora","Newsreader",Georgia,serif;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+  .disp{font-family:var(--disp);font-style:italic}
+  /* top nav */
+  .nav{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+  .nav-in{max-width:1240px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:20px}
+  .nav .logo{height:48px}
+  .nav .grow{flex:1}
+  .navlinks{display:flex;gap:4px} .navlinks a{font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 11px;border-radius:7px}
+  .navlinks a:hover{color:var(--forest);background:var(--paper)} .navlinks a.on{color:var(--forest);background:var(--mint)}
+  .cta-trade{background:var(--forest);color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:9px 16px;border-radius:8px;text-decoration:none}
+  .cta-trade:hover{background:var(--green)}
+  /* hero */
+  .hero{position:relative;background:linear-gradient(160deg,var(--forest),var(--forest-2));color:#fff;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;opacity:.13;
+    background-image:linear-gradient(135deg,transparent 46%,rgba(255,255,255,.5) 47%,transparent 48%),linear-gradient(45deg,transparent 46%,rgba(255,255,255,.5) 47%,transparent 48%);background-size:34px 34px}
+  .hero-in{position:relative;max-width:1240px;margin:0 auto;padding:64px 24px 72px;z-index:1}
+  .hero .kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--sage);font-weight:700}
+  .hero h1{font-family:var(--disp);font-style:italic;font-weight:600;font-size:clamp(38px,6vw,68px);line-height:1.02;margin:14px 0 0;max-width:14ch}
+  .hero p{font-size:18px;max-width:46ch;margin:20px 0 0;color:#dce9e0}
+  .hero .sig{margin-top:26px;font-family:var(--disp);font-style:italic;font-size:18px;color:#fff}
+  .hero .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+  .hero .badges span{border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600;color:#eaf3ee}
+  /* strip */
+  .strip{background:var(--mint);color:var(--forest);text-align:center;padding:11px;font-size:13px;font-weight:600}
+  .strip b{font-style:italic;font-family:var(--disp)}
+  /* section */
+  .sec{max-width:1240px;margin:0 auto;padding:54px 24px}
+  .sec-head{text-align:center;margin-bottom:34px}
+  .sec-head .eye{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);font-weight:700}
+  .sec-head h2{font-family:var(--disp);font-style:italic;font-weight:600;font-size:36px;color:var(--forest);margin:8px 0 0}
+  .sec-head p{color:var(--muted);max-width:54ch;margin:10px auto 0}
+  /* product grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:24px}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.2s;display:flex;flex-direction:column}
+  .pcard:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(6,78,34,.12)}
+  .pcard .img{aspect-ratio:1/1;background:var(--mint);position:relative;overflow:hidden}
+  .pcard .img img{width:100%;height:100%;object-fit:cover;display:block}
+  .pcard .badge{position:absolute;top:12px;left:12px;background:rgba(6,78,34,.92);color:#fff;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:5px 10px;border-radius:999px}
+  .pcard .body{padding:17px 18px 20px;display:flex;flex-direction:column;flex:1}
+  .pcard .range{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);font-weight:700}
+  .pcard h3{font-family:var(--disp);font-style:italic;font-weight:600;font-size:21px;color:var(--forest);margin:4px 0 0;line-height:1.1}
+  .pcard .blurb{font-size:13px;color:var(--muted);margin:9px 0 0;flex:1}
+  .pcard .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:13px}
+  .pcard .meta span{font-size:10.5px;font-weight:600;color:var(--forest);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+  .pcard .foot{display:flex;align-items:center;justify-content:space-between;margin-top:15px;padding-top:14px;border-top:1px solid var(--line)}
+  .pcard .price{font-size:12.5px;color:var(--muted)} .pcard .price b{font-family:var(--disp);font-style:italic;color:var(--forest);font-size:16px}
+  .pcard .inq{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--green);border:1px solid var(--sage);border-radius:8px;padding:7px 12px;background:transparent;cursor:pointer}
+  .pcard .inq:hover{background:var(--mint)}
+  /* values band */
+  .band{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .band-in{max-width:1240px;margin:0 auto;padding:48px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .val h4{font-family:var(--disp);font-style:italic;font-size:22px;color:var(--forest);margin:0}
+  .val p{color:var(--muted);font-size:14px;margin:8px 0 0}
+  footer{background:var(--forest);color:#cfe3d6;text-align:center;padding:40px 24px}
+  footer .sig{font-family:var(--disp);font-style:italic;font-size:20px;color:#fff}
+  footer .fine{font-size:12px;margin-top:10px;color:#9ec6ab}
+  @media(max-width:760px){.band-in{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="nav"><div class="nav-in">
+  <img class="logo" src="./brand/MontiTrentini_Logo.png" alt="Monti Trentini">
+  <div class="grow"></div>
+  <nav class="navlinks">
+    <a href="./index.html">Portal</a><a href="./proforma.html">Proforma</a>
+    <a href="./report.html">Movement</a><a href="./commitments.html">Commitments</a><a href="./storefront.html" class="on">Storefront</a>
+  </nav>
+  <a class="cta-trade" href="./proforma.html">Trade login</a>
+</div></div>
+
+<div class="hero"><div class="hero-in">
+  <div class="kicker">Product of the Mountains · since 1925</div>
+  <h1 class="disp">Italian Alpine cheese, made at altitude.</h1>
+  <p>Four generations of casari in the Trentino mountains. Milk from the neighborhood — collected and transformed above 600 metres, then aged in our own plants.</p>
+  <div class="sig disp">Casa Finco, casari dal 1925</div>
+  <div class="badges"><span>Asiago PDO</span><span>Grana Padano PDO</span><span>Provolone Valpadana PDO</span><span>Mountain milk</span></div>
+</div></div>
+<div class="strip">A hundred-year-long story does not happen by chance. <b>Happy stories</b> — storie felici.</div>
+
+<div class="sec">
+  <div class="sec-head">
+    <div class="eye">The range</div>
+    <h2 class="disp">From our mountains to your table</h2>
+    <p>Made and aged entirely in-house in Grigno. Direct-to-consumer is launching — explore the range; wholesale partners can quote any format in the trade portal.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="band"><div class="band-in">
+  <div class="val"><h4 class="disp">Family</h4><p>Four generations — people are the heart and mind of the dairy. Some of our collaborations last decades.</p></div>
+  <div class="val"><h4 class="disp">Respect of territory</h4><p>A short-range supply chain — milk only from the Trentino mountains, the Asiago plateau, and the near Veneto valleys.</p></div>
+  <div class="val"><h4 class="disp">Quality</h4><p>We do everything at home: milk processing, cheesemaking, ageing, and packaging — every wheel traceable.</p></div>
+</div></div>
+
+<footer>
+  <div class="sig disp">We innovate by tradition.</div>
+  <div class="fine">Monti Trentini · Casearia Monti Trentini, Grigno (TN), Italia · Product of the Mountains</div>
+</footer>
+
+<script>
+const esc=s=>String(s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const titleCase=s=>String(s||"").toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase());
+async function boot(){
+  let catalog,cfg;
+  try{ [catalog,cfg]=await Promise.all([fetch("./catalog.json").then(r=>r.json()),fetch("./client.config.json").then(r=>r.json())]); }
+  catch(e){ document.getElementById("grid").innerHTML=`<p style="color:#C0392B">Couldn't load catalog: ${e.message}</p>`; return; }
+  const cloud=cfg.images.cloud, folder=cfg.images.folder;
+  const img=code=>`https://res.cloudinary.com/${cloud}/image/upload/f_auto,q_auto,c_fill,w_600/${folder}/${code}.jpg`;
+  // featured first, then the rest; cap for a clean showcase
+  const prods=[...catalog.products].sort((a,b)=>(b.marketing.featured?1:0)-(a.marketing.featured?1:0));
+  document.getElementById("grid").innerHTML=prods.map(p=>{
+    const s0=p.skus[0]; const mk=p.marketing||{};
+    const meta=[mk.age,mk.milk,p.skus.length>1?`${p.skus.length} formats`:null].filter(Boolean).map(m=>`<span>${esc(m)}</span>`).join("");
+    return `<div class="pcard">
+      <div class="img">${mk.badge?`<span class="badge">${esc(mk.badge)}</span>`:''}
+        <img loading="lazy" src="${img(s0.image)}" alt="${esc(p.name)}" onerror="this.style.display='none'"></div>
+      <div class="body">
+        <div class="range">${esc(p.category)}</div>
+        <h3 class="disp">${esc(titleCase(p.name))}</h3>
+        <div class="blurb">${esc(mk.blurb||'')}</div>
+        <div class="meta">${meta}</div>
+        <div class="foot">
+          <div class="price"><b>DTC soon</b><br><span style="font-size:11px">Wholesale available</span></div>
+          <button class="inq" onclick="location.href='./proforma.html'">Trade quote</button>
+        </div>
+      </div></div>`;
+  }).join("");
+}
+boot();
+</script>
+</body>
+</html>

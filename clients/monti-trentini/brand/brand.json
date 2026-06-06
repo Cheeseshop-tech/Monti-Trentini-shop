@@ -1,0 +1,51 @@
+{
+  "brand": "Monti Trentini",
+  "legalName": "Casearia Monti Trentini",
+  "tagline": "Casa Finco, casari dal 1925",
+  "taglineEn": "Casa Finco — cheesemakers since 1925",
+  "positioning": "Product of the Mountains — authentic Italian Alpine cheese, made at altitude (above 600 m), since 1925.",
+  "source": "Brand_Guide_2026-05-24 + Monti_Trentini_Brand_Voice.docx (live extraction from montitrentini.com)",
+
+  "logos": {
+    "primary": "brand/MontiTrentini_Logo.png",
+    "square":  "brand/logo-square.png",
+    "note": "Green oval with cow + mountain-M wordmark + 'Formaggi & Tradizione'. The logo carries its own green background; place on cream or white, not on busy art."
+  },
+
+  "colors": {
+    "forestGreen":   { "hex": "#064E22", "role": "Primary headlines + logo background", "ratio": 25 },
+    "italiaGreen":   { "hex": "#009640", "role": "Heritage accent, actionable green",   "ratio": 8 },
+    "pastureSage":   { "hex": "#70C883", "role": "Mid-tone accent, hover states" },
+    "alpineMint":    { "hex": "#C8E2C5", "role": "Soft backgrounds, decorative shapes",  "ratio": 5 },
+    "heritageCream": { "hex": "#FFFBDC", "role": "Primary page background",              "ratio": 50 },
+    "casaPaper":     { "hex": "#FAF9F5", "role": "Secondary canvas, cards" },
+    "pureWhite":     { "hex": "#FFFFFF", "role": "Logo wordmark, contrast lift" },
+    "stoneCharcoal": { "hex": "#716A6A", "role": "Secondary text, captions" },
+    "mountainInk":   { "hex": "#141413", "role": "Body copy, fine detail",              "ratio": 10 },
+    "italiaRed":     { "hex": "#CE2B37", "role": "Italian-flag ribbon on logo ONLY — never a layout color", "ratio": 2 }
+  },
+  "colorRules": [
+    "Cream backgrounds with green typography — never the reverse for body copy.",
+    "Forest Green for headlines + logo backgrounds; Italia Green only as a heritage accent.",
+    "Italia Red is reserved for the logo ribbon. Never use it as a UI/layout color."
+  ],
+
+  "type": {
+    "display": { "official": "Cora (Production Type), italic only — 400/500/700 italic",
+                 "webSubstitute": "Newsreader (italic)", "use": "editorial/heritage headlines; Cora is ITALIC-only" },
+    "ui":      { "official": "Futura PT (Adobe), 500/700", "webSubstitute": "Jost",
+                 "use": "UI, buttons, forms, nav — every actionable element; 700 UPPERCASE +0.04em for buttons" },
+    "adobeTypekit": "med2peg",
+    "ratio": "~65% Cora italic / 30% Futura PT 700 / 5% Futura PT Bold/Condensed",
+    "note": "Cora + Futura PT are Adobe Typekit (kit med2peg) — load on the real domain; web substitutes (Newsreader/Jost) are used where Typekit can't serve."
+  },
+
+  "voice": {
+    "attributes": ["editorial", "place-rooted", "familial", "quietly proud", "plural-spoken (\"we\")"],
+    "leadHook": "Lead with mountain / altitude / Alpine — not generic \"Italian\".",
+    "ownedWords": ["casari", "Casa Finco", "Caseificio Finco", "Storie felici / Happy stories", "altopiano", "malga", "alpeggio", "Product of the Mountains"],
+    "avoidWords": ["premium", "luxury", "world-class", "disrupt", "innovative (alone — pair as 'we innovate by tradition')", "industrial (use 'family-run modern industry')"],
+    "do": "The opening chapter of our history is written in 1925 by grandfather Florindo…",
+    "dont": "Founded in 1925, Monti Trentini is a leading premium cheese brand…"
+  }
+}
