@@ -17,6 +17,8 @@ function PriceTag({ p, wholesale, big }) {
 function ProductCard({ p, onNav, wholesale }) {
   const cart = React.useContext(window.CartCtx);
   const [hover, setHover] = React.useState(false);
+  const mobile = window.useIsMobile();
+  const show = hover || mobile;   // touch devices have no hover — keep Add visible (audit HIGH)
   const sold = p.availability === "unavailable";
   const pre = p.availability === "preorder";
   return (
@@ -27,7 +29,7 @@ function ProductCard({ p, onNav, wholesale }) {
         {p.availability && p.availability !== "in_stock" &&
           <span style={{ ...ctStyles.stockChip, ...(sold ? ctStyles.stockOut : ctStyles.stockPre) }}>{sold ? "Unavailable" : "Pre-order"}</span>}
         <button className="mt-btn mt-btn--solid" disabled={sold}
-          style={{ ...ctStyles.quickAdd, opacity: hover ? 1 : 0, transform: hover ? "translateY(0)" : "translateY(8px)", ...(sold ? { filter: "grayscale(1)", cursor: "not-allowed" } : {}) }}
+          style={{ ...ctStyles.quickAdd, opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(8px)", ...(sold ? { filter: "grayscale(1)", cursor: "not-allowed" } : {}) }}
           onClick={(e) => { e.stopPropagation(); if (!sold) cart.add(p.id); }}>
           {sold ? "Unavailable" : pre ? "Pre-order · add" : "Add a case"}
         </button>
@@ -47,21 +49,24 @@ function CollectionPage({ onNav, wholesale }) {
   const ranges = ["All", ...Array.from(new Set(products.map((p) => p.range)))];
   const [filter, setFilter] = React.useState("All");
   const shown = filter === "All" ? products : products.filter((p) => p.range === filter);
+  const mobile = window.useIsMobile();
+  const narrow = window.useIsMobile(480);
+  const gridCols = narrow ? "1fr" : (mobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)");
   return (
     <main>
-      <div style={ctStyles.plpHead}>
+      <div style={{ ...ctStyles.plpHead, ...(mobile ? ctStyles.plpHeadMobile : {}) }}>
         <Eyebrow>Shop · 50+ cheeses, 300 references</Eyebrow>
-        <h1 style={ctStyles.plpTitle}>The cheeses of the mountain.</h1>
-        <p style={ctStyles.plpIntro}>Milk processing, cheese making, aging and packaging — all in our own plants in Grigno.</p>
+        <h1 style={{ ...ctStyles.plpTitle, ...(mobile ? ctStyles.plpTitleMobile : {}) }}>The cheeses of the mountain.</h1>
+        <p style={{ ...ctStyles.plpIntro, ...(mobile ? ctStyles.plpIntroMobile : {}) }}>Milk processing, cheese making, aging and packaging — all in our own plants in Grigno.</p>
       </div>
-      <div style={ctStyles.plpBody}>
+      <div style={{ ...ctStyles.plpBody, ...(mobile ? ctStyles.plpBodyMobile : {}) }}>
         <div style={ctStyles.filters}>
           {ranges.map((r) => (
             <button key={r} onClick={() => setFilter(r)}
               style={{ ...ctStyles.chip, ...(filter === r ? ctStyles.chipOn : {}) }}>{r}</button>
           ))}
         </div>
-        <div style={ctStyles.grid}>
+        <div style={{ ...ctStyles.grid, gridTemplateColumns: gridCols, ...(mobile ? { gap: 14 } : {}) }}>
           {shown.map((p) => <ProductCard key={p.id} p={p} onNav={onNav} wholesale={wholesale} />)}
         </div>
       </div>
@@ -79,11 +84,14 @@ function ProductPage({ id, onNav, wholesale }) {
   const sold = p.availability === "unavailable";
   const pre = p.availability === "preorder";
   const shelf = formats[0] && formats[0].shelfDays ? `${formats[0].shelfDays} days` : "—";
+  const mobile = window.useIsMobile();
+  const narrow = window.useIsMobile(480);
+  const relCols = narrow ? "1fr" : (mobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)");
   window.useLucide();
   return (
-    <main style={ctStyles.pdpWrap}>
+    <main style={{ ...ctStyles.pdpWrap, ...(mobile ? ctStyles.pdpWrapMobile : {}) }}>
       <button style={ctStyles.back} onClick={() => onNav("collection")}><Icon name="arrow-left" size={16} /> Back to shop</button>
-      <div style={ctStyles.pdpGrid}>
+      <div style={{ ...ctStyles.pdpGrid, ...(mobile ? ctStyles.pdpGridMobile : {}) }}>
         <div style={{ ...ctStyles.pdpImage, background: p.grad, overflow: "hidden" }}>
           {p.image && <img alt={p.name} {...window.productImgProps(p.image, { w: 900 })} />}
           <span style={{ ...ctStyles.badge, position: "relative", zIndex: 1 }}>{p.badge}</span>
@@ -92,16 +100,16 @@ function ProductPage({ id, onNav, wholesale }) {
         </div>
         <div>
           <div style={ctStyles.range}>{p.range}</div>
-          <h1 style={ctStyles.pdpTitle}>{p.name}</h1>
+          <h1 style={{ ...ctStyles.pdpTitle, ...(mobile ? ctStyles.pdpTitleMobile : {}) }}>{p.name}</h1>
           <div style={{ margin: "14px 0 18px" }}><PriceTag p={p} wholesale={wholesale} big /></div>
-          <p style={ctStyles.pdpBlurb}>{p.blurb}</p>
+          <p style={{ ...ctStyles.pdpBlurb, ...(mobile ? ctStyles.pdpBlurbMobile : {}) }}>{p.blurb}</p>
           {p.availability && p.availability !== "in_stock" && (
             <div style={{ ...ctStyles.availBanner, ...(sold ? ctStyles.availBannerOut : ctStyles.availBannerPre) }}>
               <Icon name={sold ? "x-circle" : "clock"} size={16} />
               {sold ? "Not currently available (FDA restriction)." : "Available to pre-order — allocated by order."}
             </div>
           )}
-          <div style={ctStyles.specs}>
+          <div style={{ ...ctStyles.specs, ...(mobile ? ctStyles.specsMobile : {}) }}>
             <Spec icon="mountain" label="Origin" value={p.milk} />
             <Spec icon="clock" label="Ageing" value={p.age} />
             <Spec icon="calendar" label="Shelf life" value={shelf} />
@@ -126,29 +134,35 @@ function ProductPage({ id, onNav, wholesale }) {
       </div>
 
       <div style={ctStyles.fmtWrap}>
-        <h2 style={ctStyles.fmtTitle}>Formats &amp; trade pricing</h2>
-        <div style={ctStyles.fmtTable}>
-          <div style={{ ...ctStyles.fmtRow, ...ctStyles.fmtHead }}>
-            <span>Item</span><span>Format</span><span style={{ textAlign: "right" }}>Net lb/cs</span><span style={{ textAlign: "right" }}>Pcs/cs</span>
-            <span style={{ textAlign: "right" }}>EXW $/lb</span><span style={{ textAlign: "right" }}>Delivered $/lb</span><span style={{ textAlign: "right" }}>Cs/pallet</span><span style={{ textAlign: "right" }}>Shelf</span>
+        <h2 style={{ ...ctStyles.fmtTitle, ...(mobile ? ctStyles.fmtTitleMobile : {}) }}>Formats &amp; trade pricing</h2>
+        {mobile ? (
+          <div style={ctStyles.fmtCards}>
+            {formats.map((f) => <FormatCard key={f.code} f={f} />)}
           </div>
-          {formats.map((f) => (
-            <div key={f.code} style={ctStyles.fmtRow}>
-              <span style={ctStyles.fmtCode}>{f.code}</span>
-              <span style={ctStyles.fmtName}>{f.packing}</span>
-              <span style={ctStyles.fmtNum}>{f.netLb}</span>
-              <span style={ctStyles.fmtNum}>{f.piecesPerCase}</span>
-              <span style={{ ...ctStyles.fmtNum, fontWeight: 700, color: "var(--mt-forest)" }}>{window.money(f.pickupLb)}</span>
-              <span style={ctStyles.fmtNum}>{window.money(f.deliveryLb)}</span>
-              <span style={ctStyles.fmtNum}>{f.casesPerPallet}</span>
-              <span style={ctStyles.fmtNum}>{f.shelfDays}d</span>
+        ) : (
+          <div style={ctStyles.fmtTable}>
+            <div style={{ ...ctStyles.fmtRow, ...ctStyles.fmtHead }}>
+              <span>Item</span><span>Format</span><span style={{ textAlign: "right" }}>Net lb/cs</span><span style={{ textAlign: "right" }}>Pcs/cs</span>
+              <span style={{ textAlign: "right" }}>EXW $/lb</span><span style={{ textAlign: "right" }}>Delivered $/lb</span><span style={{ textAlign: "right" }}>Cs/pallet</span><span style={{ textAlign: "right" }}>Shelf</span>
             </div>
-          ))}
-        </div>
+            {formats.map((f) => (
+              <div key={f.code} style={ctStyles.fmtRow}>
+                <span style={ctStyles.fmtCode}>{f.code}</span>
+                <span style={ctStyles.fmtName}>{f.packing}</span>
+                <span style={ctStyles.fmtNum}>{f.netLb}</span>
+                <span style={ctStyles.fmtNum}>{f.piecesPerCase}</span>
+                <span style={{ ...ctStyles.fmtNum, fontWeight: 700, color: "var(--mt-forest)" }}>{window.money(f.pickupLb)}</span>
+                <span style={ctStyles.fmtNum}>{window.money(f.deliveryLb)}</span>
+                <span style={ctStyles.fmtNum}>{f.casesPerPallet}</span>
+                <span style={ctStyles.fmtNum}>{f.shelfDays}d</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div style={ctStyles.relWrap}>
         <h2 style={ctStyles.relTitle}>Pairs well with</h2>
-        <div style={ctStyles.grid}>
+        <div style={{ ...ctStyles.grid, gridTemplateColumns: relCols, ...(mobile ? { gap: 14 } : {}) }}>
           {related.map((r) => <ProductCard key={r.id} p={r} onNav={onNav} wholesale={wholesale} />)}
         </div>
       </div>
@@ -161,6 +175,43 @@ function Spec({ icon, label, value }) {
     <div style={ctStyles.spec}>
       <span style={ctStyles.specIcon}><Icon name={icon} size={17} /></span>
       <div><div style={ctStyles.specLabel}>{label}</div><div style={ctStyles.specValue}>{value}</div></div>
+    </div>
+  );
+}
+
+// Mobile replacement for the 8-column trade table (audit CRITICAL #4): one card per
+// format showing code, packing and EXW $/lb, with the secondary columns behind a toggle.
+function FmtKV({ k, v }) {
+  return (
+    <div style={ctStyles.fmtKV}><span style={ctStyles.fmtKVk}>{k}</span><span style={ctStyles.fmtKVv}>{v}</span></div>
+  );
+}
+function FormatCard({ f }) {
+  const [open, setOpen] = React.useState(false);
+  window.useLucide();
+  return (
+    <div style={ctStyles.fmtCard}>
+      <div style={ctStyles.fmtCardTop}>
+        <div style={{ minWidth: 0 }}>
+          <div style={ctStyles.fmtName}>{f.packing}</div>
+          <div style={ctStyles.fmtCardCode}>Item {f.code}</div>
+        </div>
+        <div style={ctStyles.fmtCardPrice}>
+          {window.money(f.pickupLb)}<span style={ctStyles.fmtCardUnit}>/lb EXW</span>
+        </div>
+      </div>
+      <button style={ctStyles.fmtDetailsBtn} onClick={() => setOpen((o) => !o)}>
+        <Icon name={open ? "chevron-up" : "chevron-down"} size={15} /> {open ? "Hide details" : "Details"}
+      </button>
+      {open && (
+        <div style={ctStyles.fmtDetailGrid}>
+          <FmtKV k="Net lb/cs" v={f.netLb} />
+          <FmtKV k="Pcs/cs" v={f.piecesPerCase} />
+          <FmtKV k="Delivered $/lb" v={window.money(f.deliveryLb)} />
+          <FmtKV k="Cs/pallet" v={f.casesPerPallet} />
+          <FmtKV k="Shelf" v={f.shelfDays + "d"} />
+        </div>
+      )}
     </div>
   );
 }
@@ -215,6 +266,29 @@ const ctStyles = {
   fmtNum: { fontFamily: "var(--font-ui)", fontWeight: 500, fontSize: 13.5, color: "var(--mt-forest)", textAlign: "right" },
   fmtCode: { fontFamily: "var(--font-ui-bold)", fontWeight: 700, fontSize: 12.5, color: "var(--mt-charcoal)" },
   fmtName: { fontFamily: "var(--font-display)", fontStyle: "italic", fontWeight: 700, fontSize: 15, color: "var(--mt-forest)" },
+
+  // --- Mobile overrides (audit Phase 1/2) ---
+  plpHeadMobile: { padding: "28px 18px 4px" },
+  plpTitleMobile: { fontSize: 30 },
+  plpIntroMobile: { fontSize: 16, marginTop: 10 },
+  plpBodyMobile: { padding: "20px 16px 64px" },
+  pdpWrapMobile: { padding: "18px 16px 64px" },
+  pdpGridMobile: { gridTemplateColumns: "1fr", gap: 22 },
+  pdpTitleMobile: { fontSize: 32 },
+  pdpBlurbMobile: { fontSize: 17, margin: "0 0 20px" },
+  specsMobile: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 },
+  fmtTitleMobile: { fontSize: 24 },
+  fmtCards: { display: "flex", flexDirection: "column", gap: 12 },
+  fmtCard: { background: "var(--mt-paper)", borderRadius: 14, padding: "14px 16px", boxShadow: "var(--shadow-card)" },
+  fmtCardTop: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
+  fmtCardCode: { fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--mt-charcoal)", marginTop: 2 },
+  fmtCardPrice: { fontFamily: "var(--font-ui-bold)", fontWeight: 700, fontSize: 20, color: "var(--mt-forest)", whiteSpace: "nowrap", flex: "none" },
+  fmtCardUnit: { fontFamily: "var(--font-ui)", fontWeight: 500, fontSize: 12, color: "var(--mt-charcoal)", marginLeft: 3 },
+  fmtDetailsBtn: { display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: 12.5, textTransform: "uppercase", letterSpacing: "0.04em", color: "var(--mt-italia-green)", padding: "10px 0 4px", minHeight: 40 },
+  fmtDetailGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px", paddingTop: 10, marginTop: 6, borderTop: "1px solid var(--mt-forest-12)" },
+  fmtKV: { display: "flex", justifyContent: "space-between", gap: 8 },
+  fmtKVk: { fontFamily: "var(--font-ui)", fontWeight: 500, fontSize: 12.5, color: "var(--mt-charcoal)" },
+  fmtKVv: { fontFamily: "var(--font-ui-bold)", fontWeight: 700, fontSize: 13, color: "var(--mt-forest)" },
 };
 // assurance spans get icon gap
 ctStyles.assuranceSpan = {};
