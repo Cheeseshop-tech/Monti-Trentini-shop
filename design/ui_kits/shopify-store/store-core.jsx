@@ -28,6 +28,24 @@ window.useLucide = function () {
   });
 };
 
+// Responsive breakpoint hook — returns true when viewport width < bp (default 768px).
+// Re-evaluates on resize/orientation change. Drives mobile style overrides across the
+// store (Option A from the mobile UX audit: conditional inline styles, no build step).
+window.useIsMobile = function (bp = 768) {
+  const get = () => (typeof window !== "undefined" ? window.innerWidth < bp : false);
+  const [m, setM] = React.useState(get);
+  React.useEffect(() => {
+    const on = () => setM(get());
+    window.addEventListener("resize", on);
+    window.addEventListener("orientationchange", on);
+    return () => {
+      window.removeEventListener("resize", on);
+      window.removeEventListener("orientationchange", on);
+    };
+  }, [bp]);
+  return m;
+};
+
 // Cart provider (used by App)
 window.useCartState = function () {
   const [items, setItems] = React.useState([]); // {id, qty}

@@ -12,6 +12,7 @@ function lineItems(cart, products, wholesale) {
 function CartDrawer({ onNav, wholesale }) {
   const cart = React.useContext(window.CartCtx);
   const { products } = window.STORE_DATA;
+  const mobile = window.useIsMobile();
   window.useLucide();
   const lines = lineItems(cart, products, wholesale);
   const subtotal = lines.reduce((s, l) => s + l.line, 0);
@@ -22,7 +23,7 @@ function CartDrawer({ onNav, wholesale }) {
   return (
     <React.Fragment>
       <div className={"cart-scrim" + (cart.open ? " is-open" : "")} style={cStyles.scrim} onClick={() => cart.setOpen(false)} />
-      <aside className={"cart-drawer" + (cart.open ? " is-open" : "")} style={cStyles.drawer}>
+      <aside className={"cart-drawer" + (cart.open ? " is-open" : "")} style={{ ...cStyles.drawer, ...(mobile ? cStyles.drawerMobile : {}) }}>
         <div style={cStyles.drawerHead}>
           <span style={cStyles.drawerTitle}>Your cart {cart.count > 0 && `(${cart.count})`}</span>
           <button style={cStyles.close} onClick={() => cart.setOpen(false)}><Icon name="x" size={20} /></button>
@@ -85,6 +86,7 @@ function CartLine({ l, cart, wholesale }) {
 function CartPage({ onNav, wholesale }) {
   const cart = React.useContext(window.CartCtx);
   const { products } = window.STORE_DATA;
+  const mobile = window.useIsMobile();
   window.useLucide();
   const lines = lineItems(cart, products, wholesale);
   const subtotal = lines.reduce((s, l) => s + l.line, 0);
@@ -101,13 +103,13 @@ function CartPage({ onNav, wholesale }) {
     );
   }
   return (
-    <main style={cStyles.page}>
-      <h1 style={cStyles.pageTitle}>Your cart</h1>
-      <div style={cStyles.pageGrid}>
+    <main style={{ ...cStyles.page, ...(mobile ? cStyles.pageMobile : {}) }}>
+      <h1 style={{ ...cStyles.pageTitle, ...(mobile ? cStyles.pageTitleMobile : {}) }}>Your cart</h1>
+      <div style={{ ...cStyles.pageGrid, ...(mobile ? cStyles.pageGridMobile : {}) }}>
         <div style={cStyles.pageLines}>
           {lines.map((l) => (
-            <div key={l.id} style={cStyles.pageLine}>
-              <div style={{ ...cStyles.pageThumb, background: l.grad, position: "relative", overflow: "hidden" }}>
+            <div key={l.id} style={{ ...cStyles.pageLine, ...(mobile ? cStyles.pageLineMobile : {}) }}>
+              <div style={{ ...cStyles.pageThumb, ...(mobile ? cStyles.pageThumbMobile : {}), background: l.grad, position: "relative", overflow: "hidden" }}>
                 {l.image && <img alt={l.name} {...window.productImgProps(l.image, { w: 240 })} />}
               </div>
               <div style={{ flex: 1 }}>
@@ -127,7 +129,7 @@ function CartPage({ onNav, wholesale }) {
             </div>
           ))}
         </div>
-        <aside style={cStyles.summary}>
+        <aside style={{ ...cStyles.summary, ...(mobile ? cStyles.summaryMobile : {}) }}>
           <h2 style={cStyles.sumTitle}>Order summary</h2>
           <div style={cStyles.sumRow}><span>Subtotal</span><span>{window.money(subtotal)}</span></div>
           <div style={cStyles.sumRow}><span>Shipping</span><span>{shipping === 0 ? "Free" : window.money(shipping)}</span></div>
@@ -188,6 +190,15 @@ const cStyles = {
   sumRule: { height: 1, background: "var(--mt-forest-12)", margin: "12px 0" },
   sumTotal: { display: "flex", justifyContent: "space-between", fontFamily: "var(--font-ui-bold)", fontWeight: 700, fontSize: 20, color: "var(--mt-forest)" },
   payNote: { fontFamily: "var(--font-ui)", fontWeight: 500, fontSize: 11.5, color: "var(--mt-charcoal)", textAlign: "center", marginTop: 14 },
+
+  // --- Mobile overrides (audit CRITICAL #5 + cart drawer) ---
+  drawerMobile: { width: "100vw" },
+  pageMobile: { padding: "28px 16px 64px" },
+  pageTitleMobile: { fontSize: 30, marginBottom: 20 },
+  pageGridMobile: { gridTemplateColumns: "1fr", gap: 24 },
+  pageLineMobile: { gap: 12, padding: "16px 0" },
+  pageThumbMobile: { width: 72, height: 72 },
+  summaryMobile: { position: "static", top: "auto", padding: "22px 20px 24px" },
 };
 
 Object.assign(window, { CartDrawer, CartPage });

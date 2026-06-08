@@ -2,18 +2,21 @@
 function StoreHome({ onNav, wholesale, showSocial }) {
   const { products, recipes, posts, HERO } = window.STORE_DATA;
   const featured = products.filter((p) => p.featured).slice(0, 4);
+  const mobile = window.useIsMobile();
+  const narrow = window.useIsMobile(480);
+  const cardCols = narrow ? "1fr" : (mobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)");
   window.useLucide();
   return (
     <main>
       {/* Hero */}
-      <section style={hmStyles.hero}>
+      <section style={{ ...hmStyles.hero, ...(mobile ? hmStyles.heroMobile : {}) }}>
         <div style={hmStyles.heroPhoto} />
         <div style={hmStyles.heroScrim} />
-        <div style={hmStyles.heroInner}>
+        <div style={{ ...hmStyles.heroInner, ...(mobile ? hmStyles.heroInnerMobile : {}) }}>
           <Eyebrow color="var(--mt-mint)" style={{ letterSpacing: "0.16em" }}>Product of the Mountains · since 1925</Eyebrow>
-          <h1 style={hmStyles.heroH1}>High level of happiness.</h1>
-          <p style={hmStyles.heroSub}>Italian Alpine cheese, made at altitude in the Trentino mountains. Milk from the neighbourhood, delivered to your door.</p>
-          <div style={hmStyles.heroCta}>
+          <h1 style={{ ...hmStyles.heroH1, ...(mobile ? hmStyles.heroH1Mobile : {}) }}>High level of happiness.</h1>
+          <p style={{ ...hmStyles.heroSub, ...(mobile ? hmStyles.heroSubMobile : {}) }}>Italian Alpine cheese, made at altitude in the Trentino mountains. Milk from the neighbourhood, delivered to your door.</p>
+          <div style={{ ...hmStyles.heroCta, ...(mobile ? hmStyles.heroCtaMobile : {}) }}>
             <button className="mt-btn mt-btn--solid mt-btn--lg" onClick={() => onNav("collection")}>Shop the cheeses</button>
             <button className="mt-btn mt-btn--lg" style={{ borderColor: "var(--mt-cream)", color: "var(--mt-cream)" }} onClick={() => onNav("wholesale")}>Wholesale & trade</button>
           </div>
@@ -21,7 +24,7 @@ function StoreHome({ onNav, wholesale, showSocial }) {
       </section>
 
       {/* Values strip */}
-      <section style={hmStyles.values}>
+      <section style={{ ...hmStyles.values, ...(mobile ? hmStyles.valuesMobile : {}) }}>
         {[["mountain", "Made above 600 m", "The regulated \u201CProduct of the Mountains\u201D label — milk collected and processed in the Alps."],
           ["heart-handshake", "Four generations", "A family of casari since 1925. People are the heart and mind of the dairy."],
           ["sprout", "Short supply chain", "Milk only from our neighbourhood, within 90 km of Grigno."]].map(([ic, t, d]) => (
@@ -34,37 +37,37 @@ function StoreHome({ onNav, wholesale, showSocial }) {
       </section>
 
       {/* Featured collection */}
-      <section style={hmStyles.section}>
+      <section style={{ ...hmStyles.section, ...(mobile ? hmStyles.sectionMobile : {}) }}>
         <div style={hmStyles.secHead}>
           <div>
             <Eyebrow>The shop</Eyebrow>
-            <h2 style={hmStyles.secTitle}>Our most-loved wheels.</h2>
+            <h2 style={{ ...hmStyles.secTitle, ...(mobile ? hmStyles.secTitleMobile : {}) }}>Our most-loved wheels.</h2>
           </div>
           <button className="mt-btn" onClick={() => onNav("collection")}>View all cheeses</button>
         </div>
-        <div style={hmStyles.prodGrid}>
+        <div style={{ ...hmStyles.prodGrid, gridTemplateColumns: cardCols, ...(mobile ? { gap: 14 } : {}) }}>
           {featured.map((p) => <ProductCard key={p.id} p={p} onNav={onNav} wholesale={wholesale} />)}
         </div>
       </section>
 
       {/* Editorial split — heritage */}
-      <section style={hmStyles.split}>
-        <div style={{ ...hmStyles.splitPhoto, backgroundImage: `url('${HERO}')` }} />
-        <div style={hmStyles.splitBody}>
+      <section style={{ ...hmStyles.split, ...(mobile ? hmStyles.splitMobile : {}) }}>
+        <div style={{ ...hmStyles.splitPhoto, ...(mobile ? hmStyles.splitPhotoMobile : {}), backgroundImage: `url('${HERO}')` }} />
+        <div style={{ ...hmStyles.splitBody, ...(mobile ? hmStyles.splitBodyMobile : {}) }}>
           <Eyebrow color="var(--mt-sage)">A hundred-year long story</Eyebrow>
-          <h2 style={hmStyles.splitH2}>We do everything at home.</h2>
-          <p style={hmStyles.splitText}>Milk processing, cheese making, aging and packaging — all in our own plants. Every wheel traceable, every collaboration long-running.</p>
+          <h2 style={{ ...hmStyles.splitH2, ...(mobile ? hmStyles.splitH2Mobile : {}) }}>We do everything at home.</h2>
+          <p style={{ ...hmStyles.splitText, ...(mobile ? hmStyles.splitTextMobile : {}) }}>Milk processing, cheese making, aging and packaging — all in our own plants. Every wheel traceable, every collaboration long-running.</p>
           <button className="mt-btn mt-btn--lg" style={{ borderColor: "var(--mt-cream)", color: "var(--mt-cream)" }} onClick={() => onNav("blog")}>Read our story</button>
         </div>
       </section>
 
       {/* Recipes teaser */}
-      <section style={hmStyles.section}>
+      <section style={{ ...hmStyles.section, ...(mobile ? hmStyles.sectionMobile : {}) }}>
         <div style={hmStyles.secHead}>
-          <div><Eyebrow>Recipes</Eyebrow><h2 style={hmStyles.secTitle}>Bring it to the table.</h2></div>
+          <div><Eyebrow>Recipes</Eyebrow><h2 style={{ ...hmStyles.secTitle, ...(mobile ? hmStyles.secTitleMobile : {}) }}>Bring it to the table.</h2></div>
           <button className="mt-btn" onClick={() => onNav("recipes")}>All recipes</button>
         </div>
-        <div style={hmStyles.recipeRow}>
+        <div style={{ ...hmStyles.recipeRow, ...(mobile ? hmStyles.rowMobile : {}) }}>
           {recipes.slice(0, 3).map((r) => (
             <article key={r.id} style={hmStyles.recipeCard} onClick={() => onNav("recipe", r.id)}>
               <div style={{ ...hmStyles.recipeThumb, background: r.grad }}><span style={hmStyles.recipeKicker}>{r.kicker}</span></div>
@@ -79,12 +82,12 @@ function StoreHome({ onNav, wholesale, showSocial }) {
       {showSocial !== false && <SocialFeed compact />}
 
       {/* Journal teaser */}
-      <section style={hmStyles.section}>
+      <section style={{ ...hmStyles.section, ...(mobile ? hmStyles.sectionMobile : {}) }}>
         <div style={hmStyles.secHead}>
-          <div><Eyebrow>The Journal</Eyebrow><h2 style={hmStyles.secTitle}>From the dairy.</h2></div>
+          <div><Eyebrow>The Journal</Eyebrow><h2 style={{ ...hmStyles.secTitle, ...(mobile ? hmStyles.secTitleMobile : {}) }}>From the dairy.</h2></div>
           <button className="mt-btn" onClick={() => onNav("blog")}>Read the Journal</button>
         </div>
-        <div style={hmStyles.journalRow}>
+        <div style={{ ...hmStyles.journalRow, ...(mobile ? hmStyles.rowMobile : {}) }}>
           {posts.slice(0, 3).map((p) => (
             <article key={p.id} style={hmStyles.journalCard} onClick={() => onNav("article", p.id)}>
               <div style={{ ...hmStyles.journalThumb, background: p.grad }} />
@@ -131,6 +134,22 @@ const hmStyles = {
   journalThumb: { aspectRatio: "16 / 10", borderRadius: 18, marginBottom: 14, boxShadow: "var(--shadow-soft)" },
   cat: { fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--mt-italia-green)" },
   journalTitle: { fontFamily: "var(--font-display)", fontStyle: "italic", fontWeight: 700, fontSize: 25, lineHeight: 1.12, color: "var(--mt-forest)", margin: "8px 0 0" },
+
+  // --- Mobile overrides (audit HIGH: hero, values, grids, editorial split) ---
+  heroMobile: { minHeight: "82svh" },
+  heroInnerMobile: { padding: "0 18px 40px" },
+  heroH1Mobile: { fontSize: 40, margin: "10px 0 0" },
+  heroSubMobile: { fontSize: 16, margin: "14px 0 0" },
+  heroCtaMobile: { flexDirection: "column", gap: 12, marginTop: 24, alignItems: "stretch" },
+  valuesMobile: { gridTemplateColumns: "1fr", gap: 28, padding: "40px 18px" },
+  sectionMobile: { padding: "28px 18px 36px" },
+  secTitleMobile: { fontSize: 28 },
+  splitMobile: { gridTemplateColumns: "1fr", minHeight: 0, margin: "28px 0" },
+  splitPhotoMobile: { minHeight: 220 },
+  splitBodyMobile: { padding: "36px 20px" },
+  splitH2Mobile: { fontSize: 32 },
+  splitTextMobile: { fontSize: 17 },
+  rowMobile: { gridTemplateColumns: "1fr", gap: 20 },
 };
 
 window.StoreHome = StoreHome;
